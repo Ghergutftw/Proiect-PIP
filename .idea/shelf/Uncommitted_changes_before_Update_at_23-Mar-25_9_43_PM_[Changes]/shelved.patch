@@ -1,0 +1,33 @@
+Index: main/src/main/java/ro/tuiasi/ac/App.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package ro.tuiasi.ac;\r\n\r\nimport com.openai.client.OpenAIClient;\r\nimport com.openai.client.okhttp.OpenAIOkHttpClient;\r\nimport com.openai.models.ChatModel;\r\nimport com.openai.models.responses.Response;\r\nimport com.openai.models.responses.ResponseCreateParams;\r\n\r\n/**\r\n * Hello world!\r\n *\r\n */\r\npublic class App\r\n{\r\n\r\n\r\n    String apiKey;\r\n\r\n    public static void main( String[] args )\r\n    {\r\n        OpenAIClient client = OpenAIOkHttpClient.builder()\r\n                .apiKey(\"My API Key\")\r\n                .build();\r\n\r\n        ResponseCreateParams params = ResponseCreateParams.builder()\r\n                .input(\"Say this is a test\")\r\n                .model(ChatModel.GPT_4O)\r\n                .build();\r\n        Response response = client.responses().create(params);\r\n        System.out.println(response);\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/main/src/main/java/ro/tuiasi/ac/App.java b/main/src/main/java/ro/tuiasi/ac/App.java
+--- a/main/src/main/java/ro/tuiasi/ac/App.java	(revision a868ad3894c0ae32475d99d1323db4ab053900d6)
++++ b/main/src/main/java/ro/tuiasi/ac/App.java	(date 1742759005582)
+@@ -6,20 +6,15 @@
+ import com.openai.models.responses.Response;
+ import com.openai.models.responses.ResponseCreateParams;
+ 
+-/**
+- * Hello world!
+- *
+- */
+ public class App
+ {
+ 
+-
+-    String apiKey;
++    static String apiKey = "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";
+ 
+     public static void main( String[] args )
+     {
+         OpenAIClient client = OpenAIOkHttpClient.builder()
+-                .apiKey("My API Key")
++                .apiKey(apiKey)
+                 .build();
+ 
+         ResponseCreateParams params = ResponseCreateParams.builder()
