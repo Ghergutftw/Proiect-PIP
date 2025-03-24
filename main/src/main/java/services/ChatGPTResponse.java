@@ -16,7 +16,7 @@ public class ChatGPTResponse {
     private String model;
 
     @JsonProperty("choices")
-    private List<Choice> choices;
+    private List<Choice> choices; // aici am ce am nevoie
 
     public String getMessageContent() {
         return choices != null && !choices.isEmpty() ? choices.get(0).message.content : null;
