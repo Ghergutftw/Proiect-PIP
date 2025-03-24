@@ -13,7 +13,7 @@ public class App {
         Dotenv dotenv = Dotenv.load();
 
         // Retrieve the API key from the .env file
-        String apiKey = dotenv.get("OPENAI_API_KEY");
+        String apiKey = dotenv.get("DUMMY_KEY");
         if (apiKey == null || apiKey.isEmpty()) {
             System.err.println("API key not provided! Please set the OPENAI_API_KEY in the .env file.");
             System.exit(1);
