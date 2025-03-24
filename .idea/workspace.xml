@@ -4,7 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6869747e-a606-47e1-b94e-cd9825a5279c" name="Changes" comment="-Comunicare cu chatGpt cu success,fara key" />
+    <list default="true" id="6869747e-a606-47e1-b94e-cd9825a5279c" name="Changes" comment="- Interfata initiala">
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/src/main/java/ro/tuiasi/ac/App.java" beforeDir="false" afterPath="$PROJECT_DIR$/main/src/main/java/ro/tuiasi/ac/App.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/target/classes/ro/tuiasi/ac/App.class" beforeDir="false" afterPath="$PROJECT_DIR$/main/target/classes/ro/tuiasi/ac/App.class" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -13,6 +18,18 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;Thenmo3&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/Ghergutftw/Proiect-PIP&quot;,
+    &quot;accountId&quot;: &quot;9198a421-53f1-4743-be46-d81b6e473c28&quot;
+  }
+}</component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 2
 }</component>
@@ -26,12 +43,14 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
-    "Application.App.executor": "Debug",
+    "Application.App.executor": "Run",
     "Maven. [org.apache.maven.plugins:maven-archetype-plugin:RELEASE:generate].executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
     "git-widget-placeholder": "main",
     "jdk.selected.JAVA_MODULE": "openjdk-22",
-    "last_opened_file_path": "C:/Users/madal/Desktop/Files/Proiect_PIP",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/manoo/OneDrive/Desktop/PIP-proiect/Proiect-PIP",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -42,6 +61,7 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\manoo\OneDrive\Desktop\PIP-proiect\Proiect-PIP\main\src\main\java\service" />
       <recent name="C:\Users\madal\Desktop\Files\Proiect_PIP" />
       <recent name="C:\Users\madal\Desktop\Files\Proiect_PIP\main" />
     </key>
@@ -65,14 +85,6 @@
         <item itemvalue="Application.App" />
       </list>
     </recent_temporary>
-  </component>
-  <component name="SharedIndexes">
-    <attachedChunks>
-      <set>
-        <option value="bundled-jdk-9f38398b9061-39b83d9b5494-intellij.indexing.shared.core-IU-241.15989.150" />
-        <option value="bundled-js-predefined-1d06a55b98c1-91d5c284f522-JavaScript-IU-241.15989.150" />
-      </set>
-    </attachedChunks>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -157,6 +169,7 @@
     <MESSAGE value="-Dependenta OpenAI" />
     <MESSAGE value="-Comunicare cu chatGpt cu success :D" />
     <MESSAGE value="-Comunicare cu chatGpt cu success,fara key" />
-    <option name="LAST_COMMIT_MESSAGE" value="-Comunicare cu chatGpt cu success,fara key" />
+    <MESSAGE value="- Interfata initiala" />
+    <option name="LAST_COMMIT_MESSAGE" value="- Interfata initiala" />
   </component>
 </project>
