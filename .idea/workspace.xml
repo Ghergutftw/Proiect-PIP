@@ -4,12 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6869747e-a606-47e1-b94e-cd9825a5279c" name="Changes" comment="-Comunicare cu chatGpt cu success,fara key">
-      <change afterPath="$PROJECT_DIR$/env" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/main/src/main/java/ro/tuiasi/ac/PdfAnalysis.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="6869747e-a606-47e1-b94e-cd9825a5279c" name="Changes" comment="Inceput analiza PDF">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/main/pom.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -119,7 +115,7 @@
       <workItem from="1742761940015" duration="579000" />
       <workItem from="1742763015428" duration="289000" />
       <workItem from="1742763400567" duration="483000" />
-      <workItem from="1742805383005" duration="3764000" />
+      <workItem from="1742805383005" duration="4302000" />
     </task>
     <task id="LOCAL-00001" summary="-Dependenta OpenAI">
       <option name="closed" value="true" />
@@ -169,7 +165,15 @@
       <option name="project" value="LOCAL" />
       <updated>1742763775505</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="Inceput analiza PDF">
+      <option name="closed" value="true" />
+      <created>1742809635273</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1742809635273</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -190,6 +194,7 @@
     <MESSAGE value="-Dependenta OpenAI" />
     <MESSAGE value="-Comunicare cu chatGpt cu success :D" />
     <MESSAGE value="-Comunicare cu chatGpt cu success,fara key" />
-    <option name="LAST_COMMIT_MESSAGE" value="-Comunicare cu chatGpt cu success,fara key" />
+    <MESSAGE value="Inceput analiza PDF" />
+    <option name="LAST_COMMIT_MESSAGE" value="Inceput analiza PDF" />
   </component>
 </project>
