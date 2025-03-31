@@ -1,20 +1,6 @@
 package ro.tuiasi.ac;
 
-import io.github.cdimascio.dotenv.Dotenv;
-import java.io.IOException;
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
-
-
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.File;
-
-public class App extends JFrame {
+import services.ChatGPTService;
 
     public App() {
         // Set JFrame properties
@@ -67,10 +53,10 @@ public class App extends JFrame {
 
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            App app = new App();
-            app.setVisible(true);
-        });
+        ChatGPTService chatGPTService = new ChatGPTService();
+        String message = "Hello, how are you?";
+        String response = chatGPTService.getChatGPTResponse(message);
+        System.out.println(response);
     }
 
 }
