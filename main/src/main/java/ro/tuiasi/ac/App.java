@@ -1,11 +1,17 @@
 package ro.tuiasi.ac;
 
+import services.Analysis;
+import services.ChatGPTResponse;
 import services.ChatGPTService;
+import services.PrepareResponse;
+
 import javax.swing.*;
+import java.util.List;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+
 public class App extends JFrame{
     public App() {
         // Set JFrame properties
@@ -60,8 +66,26 @@ public class App extends JFrame{
     public static void main(String[] args) {
         ChatGPTService chatGPTService = new ChatGPTService();
         String message = "Hello, how are you?";
-      //  String response = chatGPTService.getChatGPTResponse(message);
+        ChatGPTResponse response = chatGPTService.getChatGPTResponse(message);
         // System.out.println(response);
+
+        if (response != null) {
+            // Process the response using PrepareResponse
+            PrepareResponse prepareResponse = new PrepareResponse();
+            List<Analysis> analyses = prepareResponse.processResponse(response);
+
+            // Print the analysis details
+            System.out.println("Detalii analiza:");
+            for (Analysis analysis : analyses) {
+                List<String> analysisDetails = analysis.toList(); // Use the toList() method
+                for (String detail : analysisDetails) {
+                    System.out.println(detail);
+                }
+            }
+        } else {
+            System.out.println("Nu s-a primit un răspuns valid de la ChatGPT.");
+        }
+
         SwingUtilities.invokeLater(() -> {
             App app = new App();
             app.setVisible(true);
