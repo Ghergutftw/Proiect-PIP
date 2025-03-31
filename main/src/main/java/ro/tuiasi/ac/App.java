@@ -1,7 +1,12 @@
 package ro.tuiasi.ac;
 
 import services.ChatGPTService;
-
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
+public class App extends JFrame{
     public App() {
         // Set JFrame properties
         setTitle("PDF Uploader");
@@ -55,8 +60,12 @@ import services.ChatGPTService;
     public static void main(String[] args) {
         ChatGPTService chatGPTService = new ChatGPTService();
         String message = "Hello, how are you?";
-        String response = chatGPTService.getChatGPTResponse(message);
-        System.out.println(response);
+      //  String response = chatGPTService.getChatGPTResponse(message);
+        // System.out.println(response);
+        SwingUtilities.invokeLater(() -> {
+            App app = new App();
+            app.setVisible(true);
+        });
     }
 
 }
