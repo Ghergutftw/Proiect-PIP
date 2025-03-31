@@ -6,8 +6,14 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.IOException;
+
+import static ro.tuiasi.ac.PdfAnalysis.pdfReader;
 
 public class App extends JFrame{
+
+    PdfAnalysis pdfAnalysis = new PdfAnalysis();
+
     public App() {
         // Set JFrame properties
         setTitle("PDF Uploader");
@@ -21,7 +27,11 @@ public class App extends JFrame{
         uploadButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                uploadPDF();
+                try {
+                    uploadPDF();
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
             }
         });
 
@@ -34,7 +44,7 @@ public class App extends JFrame{
     }
 
     // Function to open file chooser and allow PDF selection, then call pdfReader
-    private void uploadPDF() {
+    private void uploadPDF() throws IOException {
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setDialogTitle("Select a PDF File");
         fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("PDF Documents", "pdf"));
@@ -47,15 +57,10 @@ public class App extends JFrame{
             // Here, you would add logic to store the PDF in your database
 
             // Call pdfReader with the selected file name
-            pdfReader(selectedFile.getName());
+            pdfReader(selectedFile);
         }
     }
 
-    // Function to handle the uploaded PDF file
-    private void pdfReader(String fileName) {
-        System.out.println("Opening PDF: " + fileName);
-        // Add logic to read and process the PDF file
-    }
 
 
     public static void main(String[] args) {
