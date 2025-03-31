@@ -16,7 +16,7 @@ public class ChatGPTService {
             String apiKey = dotenv.get("OPENAI_API_KEY");
 
             if (apiKey == null || apiKey.isEmpty()) {
-                throw new IllegalStateException("API key not really provided! Please set the OPENAI_API_KEY in the .env file.");
+                throw new IllegalStateException("API key not provided! Please set the OPENAI_API_KEY in the .env file.");
             }
 
             String body = """
