@@ -16,7 +16,12 @@ public class ChatGPTResponse {
     private String model;
 
     @JsonProperty("choices")
-    private List<Choice> choices; // aici am ce am nevoie
+    private List<Choice> choices; // aici primeste ce are nevoie lucian(ce frumos e sa vb despre mine la persoana a 3-a =) )
+
+    // Getter pentru lista de choices
+    public List<Choice> getChoices() {
+        return choices;
+    } // aici returneaza ce are lucian nevoie
 
     public String getMessageContent() {
         return choices != null && !choices.isEmpty() ? choices.get(0).message.content : null;
@@ -26,6 +31,10 @@ public class ChatGPTResponse {
     public static class Choice {
         @JsonProperty("message")
         private Message message;
+
+        public Message getMessage() {
+            return message;
+        }
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
@@ -35,5 +44,9 @@ public class ChatGPTResponse {
 
         @JsonProperty("content")
         private String content;
+
+        public String getContent() {
+            return content;
+        }
     }
 }
