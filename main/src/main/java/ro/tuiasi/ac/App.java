@@ -90,37 +90,40 @@ public class App extends JFrame{
         ]
     }
     """;;
-        ChatGPTResponse response = chatGPTService.getChatGPTResponse(message);
+        //ChatGPTResponse response = chatGPTService.getChatGPTResponse(message);
         // System.out.println(response);
 
-        if (response != null) {
-            System.out.println("Răspuns primit de la ChatGPT!");
+        ChatGPTResponse mockResponse = PrepareResponse.createMockResponse();
+
+        System.out.println("=== TESTARE CU MOCK RESPONSE ===");
+        System.out.println("Se folosește răspunsul mock...\n");
+
+        if (mockResponse != null) {
+            System.out.println("Răspuns mock creat cu succes!");
             System.out.println("Se procesează datele...\n");
 
             PrepareResponse prepareResponse = new PrepareResponse();
-            List<List<Analysis>> vectorAnalize = prepareResponse.processResponse(response);
+            List<List<Analysis>> vectorAnalize = prepareResponse.processResponse(mockResponse);
 
             System.out.println("=== REZULTATE ANALIZE ===");
             System.out.println("Număr seturi de rezultate: " + vectorAnalize.size());
             System.out.println("--------------------------\n");
 
-            // Iterăm prin fiecare listă de analize din vector
             for (int i = 0; i < vectorAnalize.size(); i++) {
                 System.out.println("Set #" + (i + 1) + ":");
                 List<Analysis> analizeCurente = vectorAnalize.get(i);
 
-                // Afișăm fiecare analiză folosind metoda toList()
                 for (Analysis analiza : analizeCurente) {
-                    List<String> detaliiAnaliza = analiza.toList();  // Am redenumit variabila aici
-                    for (String detaliu : detaliiAnaliza) {         // Și aici
+                    List<String> detaliiAnaliza = analiza.toList();
+                    for (String detaliu : detaliiAnaliza) {
                         System.out.println("  " + detaliu);
                     }
-                    System.out.println();  // Linie goală între analize
+                    System.out.println();
                 }
                 System.out.println("----------------------");
             }
         } else {
-            System.out.println("Eroare: Nu s-a primit răspuns de la ChatGPT.");
+            System.out.println("Eroare: Nu s-a putut crea răspunsul mock.");
         }
 
         SwingUtilities.invokeLater(() -> {
