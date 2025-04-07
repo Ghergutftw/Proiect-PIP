@@ -4,11 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Analysis {
-    private String denumireAnaliza;
-    private double rezultat;
-    private String UM;
-    private String intervalReferinta;
-    private String severitate;
+    private final String denumireAnaliza;
+    private final double rezultat;
+    private final String UM;
+    private final String intervalReferinta;
+    private final String severitate;
 
     public Analysis(String denumireAnaliza, double rezultat, String UM, String intervalReferinta, String severitate) {
         this.denumireAnaliza = denumireAnaliza;
