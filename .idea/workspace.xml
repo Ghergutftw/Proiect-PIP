@@ -4,15 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6869747e-a606-47e1-b94e-cd9825a5279c" name="Changes" comment="prelucrare raspuns.2(dau lista si rez warnings)">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/main/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/src/main/java/ro/tuiasi/ac/App.java" beforeDir="false" afterPath="$PROJECT_DIR$/main/src/main/java/ro/tuiasi/ac/App.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/src/main/java/services/Analysis.java" beforeDir="false" afterPath="$PROJECT_DIR$/main/src/main/java/services/Analysis.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/src/main/java/services/ChatGPTResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/main/src/main/java/services/ChatGPTResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/src/main/java/services/PrepareResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/main/src/main/java/services/PrepareResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/target/classes/ro/tuiasi/ac/App.class" beforeDir="false" afterPath="$PROJECT_DIR$/main/target/classes/ro/tuiasi/ac/App.class" afterDir="false" />
-    </list>
+    <list default="true" id="6869747e-a606-47e1-b94e-cd9825a5279c" name="Changes" comment="Am preluat datele dintr-un mock response" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -131,7 +123,7 @@
       <workItem from="1742763015428" duration="289000" />
       <workItem from="1742763400567" duration="483000" />
       <workItem from="1742805383005" duration="4302000" />
-      <workItem from="1744009335116" duration="3756000" />
+      <workItem from="1744009335116" duration="4810000" />
     </task>
     <task id="LOCAL-00001" summary="-Dependenta OpenAI">
       <option name="closed" value="true" />
@@ -197,7 +189,31 @@
       <option name="project" value="LOCAL" />
       <updated>1743407914065</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="prelucrare raspuns.2(dau lista si rez warnings)">
+      <option name="closed" value="true" />
+      <created>1744013199598</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1744013199598</updated>
+    </task>
+    <task id="LOCAL-00010" summary="Creez vectori de respunsuri">
+      <option name="closed" value="true" />
+      <created>1744013288546</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1744013288546</updated>
+    </task>
+    <task id="LOCAL-00011" summary="Am preluat datele dintr-un mock response">
+      <option name="closed" value="true" />
+      <created>1744013998795</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1744013998795</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -220,6 +236,10 @@
     <MESSAGE value="-Comunicare cu chatGpt cu success,fara key" />
     <MESSAGE value="Inceput analiza PDF" />
     <MESSAGE value="Inceput prelucrare raspuns.2" />
-    <option name="LAST_COMMIT_MESSAGE" value="Inceput prelucrare raspuns.2" />
+    <MESSAGE value="Creez vector de raspunsuri" />
+    <MESSAGE value="prelucrare raspuns.2(dau lista si rez warnings)" />
+    <MESSAGE value="Creez vectori de respunsuri" />
+    <MESSAGE value="Am preluat datele dintr-un mock response" />
+    <option name="LAST_COMMIT_MESSAGE" value="Am preluat datele dintr-un mock response" />
   </component>
 </project>
