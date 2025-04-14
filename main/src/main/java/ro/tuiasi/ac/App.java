@@ -101,7 +101,7 @@ public class App extends JFrame{
             }
         ]
     }
-    """;;
+    """;
         //ChatGPTResponse response = chatGPTService.getChatGPTResponse(message);
         // System.out.println(response);
 
@@ -110,12 +110,13 @@ public class App extends JFrame{
         System.out.println("=== TESTARE CU MOCK RESPONSE ===");
         System.out.println("Se folosește răspunsul mock...\n");
 
+        incarcaDateAnalize();
+
         if (listaAnalize != null) {
             System.out.println("Răspuns mock creat cu succes!");
             System.out.println("Se procesează datele...\n");
 
             PrepareResponse prepareResponse = new PrepareResponse();
-            List<Analysis> vectorAnalize = prepareResponse.processResponse(mockResponse);
 
             System.out.println("=== REZULTATE ANALIZE ===");
             System.out.println("--------------------------\n");
