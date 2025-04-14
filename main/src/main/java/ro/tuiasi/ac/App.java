@@ -6,30 +6,33 @@ import services.ChatGPTService;
 import services.PrepareResponse;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.util.List;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import static ro.tuiasi.ac.PdfAnalysis.pdfReader;
 
 public class App extends JFrame{
 
     private static List<Analysis> listaAnalize;
-    PdfAnalysis pdfAnalysis = new PdfAnalysis();
 
     public App() {
         // Set JFrame properties
-        setTitle("PDF Uploader");
+        setTitle("Excel Uploader");
         setSize(400, 300);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
 
         // Create a button
-        JButton uploadButton = new JButton("Upload PDF");
+        JPanel buttonPanel = new JPanel();
+        JButton uploadButton = new JButton("Upload Excel");
         uploadButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -40,25 +43,41 @@ public class App extends JFrame{
                 }
             }
         });
+        buttonPanel.add(uploadButton);
+        add(buttonPanel, BorderLayout.WEST);
 
-        // Create a panel and align the button to the bottom-left
-        JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        bottomPanel.add(uploadButton);
+        // Create a table with a scroll pane (right side)
+        String[] columns = {"Analiza", "Rezultat", "Unitate de masura", "Interval de referinta", "Severitate"};
 
-        // Add panel to JFrame
-        add(bottomPanel, BorderLayout.SOUTH);
+        // Initialize table model with empty data
+        DefaultTableModel tableModel = new DefaultTableModel(columns, 0);
+        JTable table = new JTable(tableModel);
+
+        // Optional: Customize table appearance
+        table.setRowHeight(25);
+        table.setFont(new Font("Arial", Font.PLAIN, 12));
+        JScrollPane scrollPane = new JScrollPane(table);
+        add(scrollPane, BorderLayout.CENTER);
+
+        tableModel.setRowCount(0);
+
+        // Add new data from the members list
+        for (Analysis analiza : listaAnalize) {
+            Object[] rowData = {analiza.getDenumireAnaliza(), analiza.getRezultat(), analiza.getUM(), analiza.getIntervalReferinta(), analiza.getSeveritate()};
+            tableModel.addRow(rowData);
+        }
     }
 
     // Function to open file chooser and allow PDF selection, then call pdfReader
     private void uploadPDF() throws IOException {
         JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setDialogTitle("Select a PDF File");
-        fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("PDF Documents", "pdf"));
+        fileChooser.setDialogTitle("Select an Excel File");
+        fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("Excel Documents", "xlsx"));
 
         int result = fileChooser.showOpenDialog(this);
         if (result == JFileChooser.APPROVE_OPTION) {
             File selectedFile = fileChooser.getSelectedFile();
-            System.out.println("PDF Uploaded: " + selectedFile.getAbsolutePath());
+            System.out.println("Excel Uploaded: " + selectedFile.getAbsolutePath());
 
             // Here, you would add logic to store the PDF in your database
 
@@ -81,6 +100,7 @@ public class App extends JFrame{
     }
 
     public static void main(String[] args) {
+
         ChatGPTService chatGPTService = new ChatGPTService();
         String message = """
     {
