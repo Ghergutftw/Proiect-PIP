@@ -69,8 +69,8 @@ public class PrepareResponse {
      * @param chatGPTResponse Răspunsul primit de la ChatGPT
      * @return Vector de liste de obiecte Analysis (câte o listă pentru fiecare răspuns din choices)
      */
-    public List<List<Analysis>> processResponse(ChatGPTResponse chatGPTResponse) {
-        List<List<Analysis>> allAnalyses = new ArrayList<>();
+    public List<Analysis> processResponse(ChatGPTResponse chatGPTResponse) {
+        List<Analysis> allAnalyses = new ArrayList<>();
 
         // Verificăm dacă răspunsul conține date valide
         if (chatGPTResponse == null || chatGPTResponse.getChoices() == null) {
@@ -80,7 +80,6 @@ public class PrepareResponse {
 
         // Iterăm prin toate răspunsurile din `choices`
         for (ChatGPTResponse.Choice choice : chatGPTResponse.getChoices()) {
-            List<Analysis> analyses = new ArrayList<>();
             String messageContent = choice.getMessage().getContent();
 
             try {
@@ -99,7 +98,7 @@ public class PrepareResponse {
                     String severitate = (String) result.get("severitate");
 
                     // Creăm un obiect Analysis și îl adăugăm în listă
-                    analyses.add(new Analysis(denumireAnaliza, rezultat, UM, intervalReferinta, severitate));
+                    allAnalyses.add(new Analysis(denumireAnaliza, rezultat, UM, intervalReferinta, severitate));
                 }
             } catch (Exception e) {
                 System.err.println("Eroare la parsarea răspunsului: " + e.getMessage());
@@ -107,7 +106,6 @@ public class PrepareResponse {
             }
 
             // Adăugăm lista de răspunsuri în vectorul final
-            allAnalyses.add(analyses);
         }
 
         return allAnalyses;

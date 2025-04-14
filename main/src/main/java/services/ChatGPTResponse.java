@@ -16,7 +16,7 @@ public class ChatGPTResponse {
     private String model;
 
     @JsonProperty("choices")
-    private List<Choice> choices; // aici primeste ce are nevoie lucian(ce frumos e sa vb despre mine la persoana a 3-a =) )
+    private List<Choice> choices; // aici primeste ce are nevoie lucian
 
     // Getter pentru lista de choices
     public List<Choice> getChoices() {

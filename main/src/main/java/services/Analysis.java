@@ -18,18 +18,23 @@ public class Analysis {
         this.severitate = severitate;
     }
 
-    /**
-     * Returnează o listă cu toate variabilele ca șiruri de caractere.
-     *
-     * @return Lista cu valorile variabilelor
-     */
-    public List<String> toList() {
-        List<String> values = new ArrayList<>();
-        values.add("Denumire Analiza: " + denumireAnaliza);
-        values.add("Rezultat: " + rezultat);
-        values.add("Unitate de Masura: " + UM);
-        values.add("Interval Referinta: " + intervalReferinta);
-        values.add("Severitate: " + severitate);
-        return values;
+    public String getDenumireAnaliza() {
+        return denumireAnaliza;
+    }
+
+    public double getRezultat() {
+        return rezultat;
+    }
+
+    public String getUM() {
+        return UM;
+    }
+
+    public String getIntervalReferinta() {
+        return intervalReferinta;
+    }
+
+    public String getSeveritate() {
+        return severitate;
     }
 }

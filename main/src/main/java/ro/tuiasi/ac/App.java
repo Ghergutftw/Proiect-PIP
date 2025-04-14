@@ -17,6 +17,7 @@ import static ro.tuiasi.ac.PdfAnalysis.pdfReader;
 
 public class App extends JFrame{
 
+    private static List<Analysis> listaAnalize;
     PdfAnalysis pdfAnalysis = new PdfAnalysis();
 
     public App() {
@@ -67,6 +68,17 @@ public class App extends JFrame{
     }
 
 
+    // Getter pentru lista de analize
+    public static List<Analysis> getListaAnalize() {
+        return listaAnalize;
+    }
+
+    // Metodă pentru încărcarea datelor
+    public static void incarcaDateAnalize() {
+        ChatGPTResponse mockResponse = PrepareResponse.createMockResponse();
+        PrepareResponse prepareResponse = new PrepareResponse();
+        listaAnalize = prepareResponse.processResponse(mockResponse);
+    }
 
     public static void main(String[] args) {
         ChatGPTService chatGPTService = new ChatGPTService();
@@ -98,32 +110,26 @@ public class App extends JFrame{
         System.out.println("=== TESTARE CU MOCK RESPONSE ===");
         System.out.println("Se folosește răspunsul mock...\n");
 
-        if (mockResponse != null) {
+        if (listaAnalize != null) {
             System.out.println("Răspuns mock creat cu succes!");
             System.out.println("Se procesează datele...\n");
 
             PrepareResponse prepareResponse = new PrepareResponse();
-            List<List<Analysis>> vectorAnalize = prepareResponse.processResponse(mockResponse);
+            List<Analysis> vectorAnalize = prepareResponse.processResponse(mockResponse);
 
             System.out.println("=== REZULTATE ANALIZE ===");
-            System.out.println("Număr seturi de rezultate: " + vectorAnalize.size());
             System.out.println("--------------------------\n");
 
-            for (int i = 0; i < vectorAnalize.size(); i++) {
-                System.out.println("Set #" + (i + 1) + ":");
-                List<Analysis> analizeCurente = vectorAnalize.get(i);
-
-                for (Analysis analiza : analizeCurente) {
-                    List<String> detaliiAnaliza = analiza.toList();
-                    for (String detaliu : detaliiAnaliza) {
-                        System.out.println("  " + detaliu);
-                    }
-                    System.out.println();
-                }
+            for (Analysis analiza : listaAnalize) {
+                System.out.println("Severitate: " + analiza.getSeveritate());
+                System.out.println("Denumire: " + analiza.getDenumireAnaliza());
+                System.out.println("Rezultat: " + analiza.getRezultat());
+                System.out.println("UM: " + analiza.getUM());
+                System.out.println("Interval: " + analiza.getIntervalReferinta());
                 System.out.println("----------------------");
             }
         } else {
-            System.out.println("Eroare: Nu s-a putut crea răspunsul mock.");
+            System.out.println("Nu s-au încărcat datele de analiză.");
         }
 
         SwingUtilities.invokeLater(() -> {

@@ -4,7 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6869747e-a606-47e1-b94e-cd9825a5279c" name="Changes" comment="Am preluat datele dintr-un mock response" />
+    <list default="true" id="6869747e-a606-47e1-b94e-cd9825a5279c" name="Changes" comment="Am preluat datele dintr-un mock response">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/src/main/java/ro/tuiasi/ac/App.java" beforeDir="false" afterPath="$PROJECT_DIR$/main/src/main/java/ro/tuiasi/ac/App.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/src/main/java/services/Analysis.java" beforeDir="false" afterPath="$PROJECT_DIR$/main/src/main/java/services/Analysis.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/src/main/java/services/ChatGPTResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/main/src/main/java/services/ChatGPTResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/src/main/java/services/PrepareResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/main/src/main/java/services/PrepareResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/target/classes/ro/tuiasi/ac/App.class" beforeDir="false" afterPath="$PROJECT_DIR$/main/target/classes/ro/tuiasi/ac/App.class" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -26,12 +33,12 @@
     &quot;assignee&quot;: &quot;aignat131&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/Ghergutftw/Proiect-PIP.git",
-    "accountId": "29ff1ee9-e9ce-4531-a305-373de96d7075"
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/Ghergutftw/Proiect-PIP.git&quot;,
+    &quot;accountId&quot;: &quot;29ff1ee9-e9ce-4531-a305-373de96d7075&quot;
   }
-}]]></component>
+}</component>
   <component name="MavenRunner">
     <option name="skipTests" value="true" />
   </component>
@@ -123,7 +130,8 @@
       <workItem from="1742763015428" duration="289000" />
       <workItem from="1742763400567" duration="483000" />
       <workItem from="1742805383005" duration="4302000" />
-      <workItem from="1744009335116" duration="4810000" />
+      <workItem from="1744009335116" duration="6607000" />
+      <workItem from="1744614396608" duration="1489000" />
     </task>
     <task id="LOCAL-00001" summary="-Dependenta OpenAI">
       <option name="closed" value="true" />
@@ -213,7 +221,15 @@
       <option name="project" value="LOCAL" />
       <updated>1744013998795</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="Am preluat datele dintr-un mock response">
+      <option name="closed" value="true" />
+      <created>1744014178472</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1744014178472</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
