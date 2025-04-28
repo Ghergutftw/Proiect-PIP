@@ -128,7 +128,7 @@ public class App extends JFrame {
 
             JSONObject content = excelReader(selectedFile);
 
-            chatGPTService.getChatGPTResponse("Attach a severity rank for each analysis I will give you and I want the response to be in a json format " + content.toString());
+            chatGPTService.getChatGPTResponse("Attach a severity rank for each analysis I will give you and I want the response to be in a json format " + content);
         }
         return "";
 
