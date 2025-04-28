@@ -1,9 +1,13 @@
 package services;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 public class PrepareResponse {
@@ -69,43 +73,43 @@ public class PrepareResponse {
      * @param chatGPTResponse Răspunsul primit de la ChatGPT
      * @return Vector de liste de obiecte Analysis (câte o listă pentru fiecare răspuns din choices)
      */
-    public List<Analysis> processResponse(ChatGPTResponse chatGPTResponse) {
+    public static List<Analysis> processResponse(String chatGPTResponse) throws JsonProcessingException, JsonProcessingException {
         List<Analysis> allAnalyses = new ArrayList<>();
 
-        // Verificăm dacă răspunsul conține date valide
-        if (chatGPTResponse == null || chatGPTResponse.getChoices() == null) {
-            System.out.println("Răspunsul de la ChatGPT este gol sau invalid.");
-            return allAnalyses;
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode rootNode = mapper.readTree(chatGPTResponse);
+
+        JsonNode contentNode = rootNode
+                .path("choices")
+                .get(0)
+                .path("message")
+                .path("content");
+
+        String contentString = contentNode.asText();
+
+        // ✅ Extrage doar JSON-ul dintre ```json și ```
+        Pattern pattern = Pattern.compile("```json\\s*(\\{.*?\\})\\s*```", Pattern.DOTALL);
+        Matcher matcher = pattern.matcher(contentString);
+
+        String extractedJson;
+        if (matcher.find()) {
+            extractedJson = matcher.group(1);
+        } else {
+            throw new IllegalStateException("JSON block not found in the content!");
         }
 
-        // Iterăm prin toate răspunsurile din `choices`
-        for (ChatGPTResponse.Choice choice : chatGPTResponse.getChoices()) {
-            String messageContent = choice.getMessage().getContent();
+        // ✅ Parsează JSON-ul extras
+        JsonNode extractedJsonNode = mapper.readTree(extractedJson);
 
-            try {
-                // Parsăm conținutul mesajului primit de la ChatGPT
-                ObjectMapper objectMapper = new ObjectMapper();
-                Map<String, Object> parsedResponse = objectMapper.readValue(messageContent, Map.class);
+        // ✅ Iterează prin rezultate
+        for (JsonNode result : extractedJsonNode.get("results")) {
+            String denumire = result.get("denumireAnaliza").asText();
+            double rezultat = result.get("rezultat").asDouble();
+            String intervalReferinta = result.get("intervalReferinta").asText();
+            String severityRank = result.get("severityRank").asText();
 
-                // Extragem lista de rezultate
-                List<Map<String, Object>> results = (List<Map<String, Object>>) parsedResponse.get("results");
-
-                for (Map<String, Object> result : results) {
-                    String denumireAnaliza = (String) result.get("denumireAnaliza");
-                    double rezultat = ((Number) result.get("rezultat")).doubleValue();
-                    String UM = (String) result.get("UM");
-                    String intervalReferinta = (String) result.get("intervalReferinta");
-                    String severitate = (String) result.get("severitate");
-
-                    // Creăm un obiect Analysis și îl adăugăm în listă
-                    allAnalyses.add(new Analysis(denumireAnaliza, rezultat, UM, intervalReferinta, severitate));
-                }
-            } catch (Exception e) {
-                System.err.println("Eroare la parsarea răspunsului: " + e.getMessage());
-                e.printStackTrace();
-            }
-
-            // Adăugăm lista de răspunsuri în vectorul final
+            Analysis analysis = new Analysis(denumire, rezultat, intervalReferinta, severityRank);
+            allAnalyses.add(analysis);
         }
 
         return allAnalyses;
