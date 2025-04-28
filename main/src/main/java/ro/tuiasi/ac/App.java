@@ -35,7 +35,7 @@ public class App extends JFrame {
 
     public App() {
         // Set JFrame properties
-        setTitle("Excel Uploader");
+        setTitle("Excel and PDF Uploader");
         setSize(400, 300);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
@@ -43,8 +43,19 @@ public class App extends JFrame {
 
         // Create a button
         JPanel buttonPanel = new JPanel();
-        JButton uploadButton = new JButton("Upload Excel");
-        uploadButton.addActionListener(new ActionListener() {
+        JButton uploadButtonExcel = new JButton("Upload Excel");
+        JButton uploadButtonPDF = new JButton("Upload PDF");
+        uploadButtonExcel.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    uploadExcel();
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
+        });
+        uploadButtonPDF.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
@@ -62,7 +73,8 @@ public class App extends JFrame {
                 throw new RuntimeException(ex);
             }
         });
-        buttonPanel.add(uploadButton);
+        buttonPanel.add(uploadButtonExcel);
+        buttonPanel.add(uploadButtonPDF);
         add(buttonPanel, BorderLayout.WEST);
 
         // Create a table with a scroll pane (right side)
@@ -87,16 +99,15 @@ public class App extends JFrame {
         }
     }
 
-    // Function to open file chooser and allow PDF selection, then call pdfReader
     private void uploadPDF() throws IOException {
         JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setDialogTitle("Select an Excel File");
-        fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("Excel Documents", "xlsx"));
+        fileChooser.setDialogTitle("Select a PDF File");
+        fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("PDF Documents", "pdf"));
 
         int result = fileChooser.showOpenDialog(this);
         if (result == JFileChooser.APPROVE_OPTION) {
             File selectedFile = fileChooser.getSelectedFile();
-            System.out.println("Excel Uploaded: " + selectedFile.getAbsolutePath());
+            System.out.println("PDF Uploaded: " + selectedFile.getAbsolutePath());
 
             // Here, you would add logic to store the PDF in your database
 
