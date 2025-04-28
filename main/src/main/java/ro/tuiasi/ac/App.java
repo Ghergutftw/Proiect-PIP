@@ -29,8 +29,7 @@ import static ro.tuiasi.ac.PdfAnalysis.pdfReader;
 
 public class App extends JFrame {
 
-    private static List<Analysis> listaAnalize;
-    PdfAnalysis pdfAnalysis = new PdfAnalysis();
+    private static List<Analysis> listaAnalize = new ArrayList<>();
     ChatGPTService chatGPTService = new ChatGPTService();
 
     public App() {
@@ -93,6 +92,7 @@ public class App extends JFrame {
         tableModel.setRowCount(0);
 
         // Add new data from the members list
+
         for (Analysis analiza : listaAnalize) {
             Object[] rowData = {analiza.getDenumireAnaliza(), analiza.getRezultat(), analiza.getIntervalReferinta(), analiza.getSeveritate()};
             tableModel.addRow(rowData);
