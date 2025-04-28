@@ -5,14 +5,11 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.json.JSONObject;
 import services.Analysis;
-import services.ChatGPTResponse;
 import services.ChatGPTService;
 import services.PrepareResponse;
 
 import javax.swing.*;
-import java.io.FileInputStream;
 import java.util.ArrayList;
-import java.util.HashMap;
 import javax.swing.table.DefaultTableModel;
 import java.util.List;
 import java.awt.*;
@@ -20,9 +17,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 import static ro.tuiasi.ac.PdfAnalysis.excelReader;
 import static ro.tuiasi.ac.PdfAnalysis.pdfReader;
@@ -42,6 +36,7 @@ public class App extends JFrame {
 
         // Create a button
         JPanel buttonPanel = new JPanel();
+        buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.Y_AXIS));
         JButton uploadButtonExcel = new JButton("Upload Excel");
         JButton uploadButtonPDF = new JButton("Upload PDF");
         uploadButtonExcel.addActionListener(new ActionListener() {
@@ -72,7 +67,10 @@ public class App extends JFrame {
                 throw new RuntimeException(ex);
             }
         });
+        uploadButtonExcel.setAlignmentX(Component.CENTER_ALIGNMENT); // Centrează butoanele
+        uploadButtonPDF.setAlignmentX(Component.CENTER_ALIGNMENT);
         buttonPanel.add(uploadButtonExcel);
+        buttonPanel.add(Box.createVerticalStrut(10));
         buttonPanel.add(uploadButtonPDF);
         add(buttonPanel, BorderLayout.WEST);
 
@@ -140,11 +138,11 @@ public class App extends JFrame {
     }
 
     // Metodă pentru încărcarea datelor
-    public static void incarcaDateAnalize() {
-        ChatGPTResponse mockResponse = PrepareResponse.createMockResponse();
-        PrepareResponse prepareResponse = new PrepareResponse();
-//        listaAnalize = prepareResponse.processResponse(mockResponse);
-    }
+//    public static void incarcaDateAnalize() {
+//        ChatGPTResponse mockResponse = PrepareResponse.createMockResponse();
+//        PrepareResponse prepareResponse = new PrepareResponse();
+////        listaAnalize = prepareResponse.processResponse(mockResponse);
+//    }
 
     public static void main(String[] args) {
 
