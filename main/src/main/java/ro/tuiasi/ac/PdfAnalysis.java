@@ -52,10 +52,10 @@ public class PdfAnalysis {
                                 if (cell.getCellType() == CellType.NUMERIC) {
                                     analiza.put("rezultat", cell.getNumericCellValue());
                                 } else {
-                                    analiza.put("rezultat", Double.parseDouble(cell.getStringCellValue()));
+                                    analiza.put("rezultat", cell.getStringCellValue());
                                 }
                             }
-                            case 2 -> analiza.put("UM", cell.getStringCellValue());
+                            case 2 -> analiza.put("UM", cell.getNumericCellValue());
                             case 3 -> analiza.put("intervalReferinta", cell.getStringCellValue());
                         }
                         cellIndex++;
