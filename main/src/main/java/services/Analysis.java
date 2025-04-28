@@ -10,12 +10,23 @@ public class Analysis {
     private final String intervalReferinta;
     private final String severitate;
 
+    public List<String> toList() {
+        List<String> details = new ArrayList<>();
+        details.add(denumireAnaliza);
+        details.add(String.valueOf(rezultat));
+        details.add(UM);
+        details.add(intervalReferinta);
+        details.add(severitate);
+        return details;
+    }
+
     public Analysis(String denumireAnaliza, double rezultat, String UM, String intervalReferinta, String severitate) {
         this.denumireAnaliza = denumireAnaliza;
         this.rezultat = rezultat;
         this.UM = UM;
         this.intervalReferinta = intervalReferinta;
         this.severitate = severitate;
+
     }
 
     public String getDenumireAnaliza() {

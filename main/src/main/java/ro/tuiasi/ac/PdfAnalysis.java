@@ -1,24 +1,16 @@
 package ro.tuiasi.ac;
 import java.io.File;
-import java.io.FileWriter;
+import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 import com.itextpdf.text.pdf.PdfReader;
 import com.itextpdf.text.pdf.parser.LocationTextExtractionStrategy;
 import com.itextpdf.text.pdf.parser.PdfTextExtractor;
-import org.apache.pdfbox.pdmodel.PDDocument;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-
-import org.apache.pdfbox.text.PDFTextStripper;
-import technology.tabula.*;
-import technology.tabula.extractors.SpreadsheetExtractionAlgorithm;
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 public class PdfAnalysis {
 
@@ -32,5 +24,52 @@ public class PdfAnalysis {
         }
 
         reader.close();
+    }
+
+    public static JSONObject excelReader(File file) throws IOException {
+        JSONObject finalResult = new JSONObject();
+        JSONArray resultsArray = new JSONArray();
+
+        try (FileInputStream fis = new FileInputStream(file);
+             Workbook workbook = new XSSFWorkbook(fis)) {
+
+            for (Sheet sheet : workbook) {
+                boolean isFirstRow = true;
+
+                for (Row row : sheet) {
+                    if (isFirstRow) {
+                        isFirstRow = false; // Sărim peste header
+                        continue;
+                    }
+
+                    JSONObject analiza = new JSONObject();
+                    int cellIndex = 0;
+
+                    for (Cell cell : row) {
+                        switch (cellIndex) {
+                            case 0 -> analiza.put("denumireAnaliza", cell.getStringCellValue());
+                            case 1 -> {
+                                if (cell.getCellType() == CellType.NUMERIC) {
+                                    analiza.put("rezultat", cell.getNumericCellValue());
+                                } else {
+                                    analiza.put("rezultat", Double.parseDouble(cell.getStringCellValue()));
+                                }
+                            }
+                            case 2 -> analiza.put("UM", cell.getStringCellValue());
+                            case 3 -> analiza.put("intervalReferinta", cell.getStringCellValue());
+                        }
+                        cellIndex++;
+                    }
+
+                    // Adaugă doar dacă nu e un rând gol
+                    if (!analiza.isEmpty()) {
+                        resultsArray.put(analiza);
+                    }
+                }
+            }
+        }
+
+        finalResult.put("results", resultsArray);
+        return finalResult;
     }
 }

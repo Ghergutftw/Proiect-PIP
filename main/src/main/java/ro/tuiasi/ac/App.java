@@ -1,11 +1,18 @@
 package ro.tuiasi.ac;
-
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.json.JSONObject;
 import services.Analysis;
 import services.ChatGPTResponse;
 import services.ChatGPTService;
 import services.PrepareResponse;
 
 import javax.swing.*;
+import java.io.FileInputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
 import javax.swing.table.DefaultTableModel;
 import java.util.List;
 import java.awt.*;
@@ -15,12 +22,16 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
+import static ro.tuiasi.ac.PdfAnalysis.excelReader;
 import static ro.tuiasi.ac.PdfAnalysis.pdfReader;
 
-public class App extends JFrame{
+public class App extends JFrame {
 
     private static List<Analysis> listaAnalize;
+    PdfAnalysis pdfAnalysis = new PdfAnalysis();
+    ChatGPTService chatGPTService = new ChatGPTService();
 
     public App() {
         // Set JFrame properties
@@ -37,10 +48,18 @@ public class App extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    uploadPDF();
+                    uploadExcel();
                 } catch (IOException ex) {
                     throw new RuntimeException(ex);
                 }
+            }
+        });
+        JButton uploadExcelButton = new JButton("Upload Excel");
+        uploadExcelButton.addActionListener(e -> {
+            try {
+                uploadExcel();
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
             }
         });
         buttonPanel.add(uploadButton);
@@ -86,6 +105,23 @@ public class App extends JFrame{
         }
     }
 
+    private String uploadExcel() throws IOException {
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Select an Excel File");
+        fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("Excel Files", "xlsx", "xls"));
+
+        int result = fileChooser.showOpenDialog(this);
+        if (result == JFileChooser.APPROVE_OPTION) {
+            File selectedFile = fileChooser.getSelectedFile();
+            System.out.println("Excel Uploaded: " + selectedFile.getAbsolutePath());
+
+            JSONObject content = excelReader(selectedFile);
+
+            chatGPTService.getChatGPTResponse("Attach a severity rank for each analysis I will give you and I want the response to be in a json format " + content.toString());
+        }
+        return "";
+
+    }
 
     // Getter pentru lista de analize
     public static List<Analysis> getListaAnalize() {
@@ -100,7 +136,6 @@ public class App extends JFrame{
     }
 
     public static void main(String[] args) {
-
         ChatGPTService chatGPTService = new ChatGPTService();
         String message = """
     {
@@ -137,8 +172,10 @@ public class App extends JFrame{
             System.out.println("Se procesează datele...\n");
 
             PrepareResponse prepareResponse = new PrepareResponse();
+            List<Analysis> vectorAnalize = prepareResponse.processResponse(mockResponse);
 
             System.out.println("=== REZULTATE ANALIZE ===");
+            System.out.println("Număr seturi de rezultate: " + vectorAnalize.size());
             System.out.println("--------------------------\n");
 
             for (Analysis analiza : listaAnalize) {
@@ -150,7 +187,7 @@ public class App extends JFrame{
                 System.out.println("----------------------");
             }
         } else {
-            System.out.println("Nu s-au încărcat datele de analiză.");
+            System.out.println("Eroare: Nu s-a putut crea răspunsul mock.");
         }
 
         SwingUtilities.invokeLater(() -> {

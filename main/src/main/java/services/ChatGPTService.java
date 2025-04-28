@@ -18,6 +18,7 @@ public class ChatGPTService {
             if (apiKey == null || apiKey.isEmpty()) {
                 throw new IllegalStateException("API key not provided! Please set the OPENAI_API_KEY in the .env file.");
             }
+            message="Tell me a dad joke!";
 
             String body = """
                     {
@@ -40,6 +41,7 @@ public class ChatGPTService {
             HttpClient client = HttpClient.newHttpClient();
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
+            System.out.println(response.body());
             // Convert JSON string to Java object
             ObjectMapper objectMapper = new ObjectMapper();
             return objectMapper.readValue(response.body(), ChatGPTResponse.class);
