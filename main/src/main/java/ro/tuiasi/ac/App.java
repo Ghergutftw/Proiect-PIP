@@ -94,7 +94,7 @@ public class App extends JFrame {
 
         // Add new data from the members list
         for (Analysis analiza : listaAnalize) {
-            Object[] rowData = {analiza.getDenumireAnaliza(), analiza.getRezultat(), analiza.getUM(), analiza.getIntervalReferinta(), analiza.getSeveritate()};
+            Object[] rowData = {analiza.getDenumireAnaliza(), analiza.getRezultat(), analiza.getIntervalReferinta(), analiza.getSeveritate()};
             tableModel.addRow(rowData);
         }
     }
@@ -128,7 +128,7 @@ public class App extends JFrame {
 
             JSONObject content = excelReader(selectedFile);
 
-            chatGPTService.getChatGPTResponse("Attach a severity rank for each analysis I will give you and I want the response to be in a json format " + content);
+            listaAnalize = PrepareResponse.processResponse(chatGPTService.getChatGPTResponse("Attach a severity rank for each analysis I will give you and I want the response to be in a json format " + content));
         }
         return "";
 
@@ -143,63 +143,10 @@ public class App extends JFrame {
     public static void incarcaDateAnalize() {
         ChatGPTResponse mockResponse = PrepareResponse.createMockResponse();
         PrepareResponse prepareResponse = new PrepareResponse();
-        listaAnalize = prepareResponse.processResponse(mockResponse);
+//        listaAnalize = prepareResponse.processResponse(mockResponse);
     }
 
     public static void main(String[] args) {
-        ChatGPTService chatGPTService = new ChatGPTService();
-        String message = """
-    {
-        "results": [
-            {
-                "denumireAnaliza": "Hemoglobină",
-                "rezultat": 14.2,
-                "UM": "g/dL",
-                "intervalReferinta": "12.0-16.0",
-                "severitate": "normal"
-            },
-            {
-                "denumireAnaliza": "Glicemie",
-                "rezultat": 110,
-                "UM": "mg/dL",
-                "intervalReferinta": "70-99",
-                "severitate": "crescut"
-            }
-        ]
-    }
-    """;
-        //ChatGPTResponse response = chatGPTService.getChatGPTResponse(message);
-        // System.out.println(response);
-
-        ChatGPTResponse mockResponse = PrepareResponse.createMockResponse();
-
-        System.out.println("=== TESTARE CU MOCK RESPONSE ===");
-        System.out.println("Se folosește răspunsul mock...\n");
-
-        incarcaDateAnalize();
-
-        if (listaAnalize != null) {
-            System.out.println("Răspuns mock creat cu succes!");
-            System.out.println("Se procesează datele...\n");
-
-            PrepareResponse prepareResponse = new PrepareResponse();
-            List<Analysis> vectorAnalize = prepareResponse.processResponse(mockResponse);
-
-            System.out.println("=== REZULTATE ANALIZE ===");
-            System.out.println("Număr seturi de rezultate: " + vectorAnalize.size());
-            System.out.println("--------------------------\n");
-
-            for (Analysis analiza : listaAnalize) {
-                System.out.println("Severitate: " + analiza.getSeveritate());
-                System.out.println("Denumire: " + analiza.getDenumireAnaliza());
-                System.out.println("Rezultat: " + analiza.getRezultat());
-                System.out.println("UM: " + analiza.getUM());
-                System.out.println("Interval: " + analiza.getIntervalReferinta());
-                System.out.println("----------------------");
-            }
-        } else {
-            System.out.println("Eroare: Nu s-a putut crea răspunsul mock.");
-        }
 
         SwingUtilities.invokeLater(() -> {
             App app = new App();
