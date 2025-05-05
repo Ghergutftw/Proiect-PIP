@@ -11,7 +11,10 @@ public class ChatGPTService {
 
     public String getChatGPTResponse(String message) {
         try {
-            Dotenv dotenv = Dotenv.load();
+            Dotenv dotenv = Dotenv.configure()
+                    .directory("main/.env")
+                    .filename(".env")
+                    .load();
             String apiKey = dotenv.get("OPENAI_API_KEY");
 
             if (apiKey == null || apiKey.isEmpty()) {

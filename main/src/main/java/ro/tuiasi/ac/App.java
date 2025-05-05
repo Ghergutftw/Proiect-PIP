@@ -1,16 +1,17 @@
 package ro.tuiasi.ac;
+
 import org.json.JSONObject;
 import services.Analysis;
 import services.ChatGPTService;
 import services.PrepareResponse;
 
 import javax.swing.*;
-import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
-import java.util.List;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import static ro.tuiasi.ac.PdfAnalysis.excelReader;
 import static ro.tuiasi.ac.PdfAnalysis.pdfReader;
@@ -78,6 +79,14 @@ public class App extends JFrame {
         }
     }
 
+    public static void main(String[] args) {
+
+        SwingUtilities.invokeLater(() -> {
+            App app = new App();
+            app.setVisible(true);
+        });
+    }
+
     private void uploadPDF() throws IOException {
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setDialogTitle("Select a PDF File");
@@ -109,13 +118,5 @@ public class App extends JFrame {
                     ", (the fields that i want will be named exactly denumireAnaliza,rezultat,intervalReferinta,severityRank) " + content));
         }
 
-    }
-
-    public static void main(String[] args) {
-
-        SwingUtilities.invokeLater(() -> {
-            App app = new App();
-            app.setVisible(true);
-        });
     }
 }
