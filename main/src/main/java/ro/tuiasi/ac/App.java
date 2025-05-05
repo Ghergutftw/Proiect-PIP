@@ -4,11 +4,14 @@ import org.json.JSONObject;
 import services.Analysis;
 import services.ChatGPTService;
 import services.PrepareResponse;
-
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 import java.awt.*;
 import java.io.File;
+import javax.swing.BorderFactory;
+import javax.swing.JScrollPane;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +26,7 @@ public class App extends JFrame {
 
     public App() {
         setTitle("Excel and PDF Uploader");
-        setSize(400, 300);
+        setSize(800, 400);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
@@ -39,13 +42,23 @@ public class App extends JFrame {
         buttonPanel.add(uploadButtonPDF);
         add(buttonPanel, BorderLayout.WEST);
 
-        String[] columns = {"Analiza", "Rezultat", "Unitate de masura", "Interval de referinta", "Severitate"};
+        String[] columns = {"Analiza", "Rezultat", "Interval de referinta", "Severitate"};
 
         DefaultTableModel tableModel = new DefaultTableModel(columns, 0);
         JTable table = new JTable(tableModel);
 
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+
+        for (int i = 0; i < table.getColumnCount(); i++) {
+            table.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+        }
         table.setRowHeight(25);
-        table.setFont(new Font("Arial", Font.PLAIN, 12));
+        table.setFont(new Font("Arial", Font.BOLD, 14));
+        JTableHeader th = table.getTableHeader();
+        th.setFont(new Font("Arial", Font.BOLD, 14));
+        table.setRowHeight(30);
+
         JScrollPane scrollPane = new JScrollPane(table);
         add(scrollPane, BorderLayout.CENTER);
         uploadButtonExcel.addActionListener(e -> {
