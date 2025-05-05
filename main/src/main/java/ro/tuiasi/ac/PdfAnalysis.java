@@ -13,8 +13,20 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 
+/**
+ * Utility class for analyzing PDF and Excel files.
+ * <p>
+ * Contains methods to read and extract text from PDF documents
+ * and convert Excel rows into structured JSON format for analysis.
+ */
 public class PdfAnalysis {
 
+    /**
+     * Reads a PDF file and prints the text content of each page to the console.
+     *
+     * @param file the PDF file to be read.
+     * @throws IOException if the file cannot be read.
+     */
     public static void pdfReader(File file) throws IOException {
         PdfReader reader = new PdfReader(String.valueOf(file));
         int pages = reader.getNumberOfPages();
@@ -27,6 +39,17 @@ public class PdfAnalysis {
         reader.close();
     }
 
+    /**
+     * Reads an Excel (.xlsx) file and converts its content into a JSON object.
+     * Expects each row to contain:
+     * - Column 0: Name of analysis ("denumireAnaliza")
+     * - Column 1: Reference interval ("intervalReferinta")
+     * - Column 2: Result ("rezultat")
+     *
+     * @param file the Excel file to read.
+     * @return a {@link JSONObject} containing an array of parsed analysis rows under the key "results".
+     * @throws IOException if the file cannot be read.
+     */
     public static JSONObject excelReader(File file) throws IOException {
         JSONObject finalResult = new JSONObject();
         JSONArray resultsArray = new JSONArray();
@@ -56,6 +79,15 @@ public class PdfAnalysis {
         return finalResult;
     }
 
+    /**
+     * Converts a single Excel row into a JSON object with keys:
+     * - "denumireAnaliza"
+     * - "intervalReferinta"
+     * - "rezultat"
+     *
+     * @param row the Excel row to convert.
+     * @return a {@link JSONObject} containing the structured data, or empty if row is invalid.
+     */
     private static @NotNull JSONObject getJsonObject(Row row) {
         JSONObject analiza = new JSONObject();
         int cellIndex = 0;
