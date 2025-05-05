@@ -1,16 +1,17 @@
 package ro.tuiasi.ac;
+
 import org.json.JSONObject;
 import services.Analysis;
 import services.ChatGPTService;
 import services.PrepareResponse;
 
 import javax.swing.*;
-import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
-import java.util.List;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import static ro.tuiasi.ac.FileAnalysis.excelReader;
 import static ro.tuiasi.ac.FileAnalysis.pdfReader;
@@ -31,28 +32,6 @@ public class App extends JFrame {
         buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.Y_AXIS));
         JButton uploadButtonExcel = new JButton("Upload Excel");
         JButton uploadButtonPDF = new JButton("Upload PDF");
-        uploadButtonExcel.addActionListener(e -> {
-            try {
-                uploadExcel();
-            } catch (IOException ex) {
-                throw new RuntimeException(ex);
-            }
-        });
-        uploadButtonPDF.addActionListener(e -> {
-            try {
-                uploadPDF();
-            } catch (IOException ex) {
-                throw new RuntimeException(ex);
-            }
-        });
-        JButton uploadExcelButton = new JButton("Upload Excel");
-        uploadExcelButton.addActionListener(e -> {
-            try {
-                uploadExcel();
-            } catch (IOException ex) {
-                throw new RuntimeException(ex);
-            }
-        });
         uploadButtonExcel.setAlignmentX(Component.CENTER_ALIGNMENT); // Centrează butoanele
         uploadButtonPDF.setAlignmentX(Component.CENTER_ALIGNMENT);
         buttonPanel.add(uploadButtonExcel);
@@ -69,13 +48,55 @@ public class App extends JFrame {
         table.setFont(new Font("Arial", Font.PLAIN, 12));
         JScrollPane scrollPane = new JScrollPane(table);
         add(scrollPane, BorderLayout.CENTER);
+        uploadButtonExcel.addActionListener(e -> {
+            try {
+                uploadExcel();
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }finally {
+                refreshTable(tableModel);
+            }
+        });
+        uploadButtonPDF.addActionListener(e -> {
+            try {
+                uploadPDF();
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }finally {
+                refreshTable(tableModel);
+            }
+        });
+        JButton uploadExcelButton = new JButton("Upload Excel");
+        uploadExcelButton.addActionListener(e -> {
+            try {
+                uploadExcel();
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            } finally {
+                refreshTable(tableModel);
+            }
+        });
 
+
+
+    }
+
+    private void refreshTable(DefaultTableModel tableModel)
+    {
         tableModel.setRowCount(0);
 
         for (Analysis analiza : listaAnalize) {
             Object[] rowData = {analiza.getDenumireAnaliza(), analiza.getRezultat(), analiza.getIntervalReferinta(), analiza.getSeveritate()};
             tableModel.addRow(rowData);
         }
+    }
+
+    public static void main(String[] args) {
+
+        SwingUtilities.invokeLater(() -> {
+            App app = new App();
+            app.setVisible(true);
+        });
     }
 
     private void uploadPDF() throws IOException {
@@ -116,14 +137,5 @@ public class App extends JFrame {
                     "for each analysis I will give you and I want the response to be in a json format" +
                     ", (the fields that i want will be named exactly denumireAnaliza, rezultat, intervalReferinta, severityRank) " + content));
         }
-
-    }
-
-    public static void main(String[] args) {
-
-        SwingUtilities.invokeLater(() -> {
-            App app = new App();
-            app.setVisible(true);
-        });
     }
 }
