@@ -13,19 +13,23 @@ import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-public class PdfAnalysis {
+public class FileAnalysis {
 
-    public static void pdfReader(File file) throws IOException {
-        PdfReader reader = new PdfReader(String.valueOf(file));
+    public static JSONObject pdfReader(File file) throws IOException {
+        PdfReader reader = new PdfReader(file.getAbsolutePath());
+        JSONObject result = new JSONObject();
         int pages = reader.getNumberOfPages();
+
         for (int i = 1; i <= pages; i++) {
             LocationTextExtractionStrategy strategy = new LocationTextExtractionStrategy();
             String pageText = PdfTextExtractor.getTextFromPage(reader, i, strategy);
-            System.out.println("Page " + i + ":\n" + pageText);
+            result.put("page_" + i, pageText);
         }
 
         reader.close();
+        return result;
     }
+
 
     public static JSONObject excelReader(File file) throws IOException {
         JSONObject finalResult = new JSONObject();
