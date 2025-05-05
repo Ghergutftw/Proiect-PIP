@@ -1,7 +1,5 @@
 package services;
 
-import java.util.ArrayList;
-import java.util.List;
 
 public class Analysis {
     private final String denumireAnaliza;
@@ -15,7 +13,6 @@ public class Analysis {
         this.rezultat = rezultat;
         this.intervalReferinta = intervalReferinta;
         this.severitate = severitate;
-
     }
 
     public String getDenumireAnaliza() {
