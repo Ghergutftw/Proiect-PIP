@@ -18,26 +18,18 @@ public class ChatGPTService {
                 throw new IllegalStateException("API key not provided! Please set the OPENAI_API_KEY in the .env file.");
             }
 
-            String body = "{\n" +
-                    "  \"model\": \"gpt-4o-mini\",\n" +
-                    "  \"messages\": [\n" +
-                    "    {\n" +
-                    "      \"role\": \"user\",\n" +
-                    "      \"content\": \"Attach a severity rank for each analysis I will give you and I want the response to be in a json format {\\\"results\\\":[{\\\"denumireAnaliza\\\":\\\"Hemoglobin\\\",\\\"rezultat\\\":15.2,\\\"intervalReferinta\\\":\\\"13.5-17.5\\\"},{\\\"denumireAnaliza\\\":\\\"White Blood Cells\\\",\\\"rezultat\\\":13.2,\\\"intervalReferinta\\\":\\\"4.0-11.0\\\"},{\\\"denumireAnaliza\\\":\\\"Platelets\\\",\\\"rezultat\\\":200,\\\"intervalReferinta\\\":\\\"150-400\\\"},{\\\"denumireAnaliza\\\":\\\"Glucose (fasting)\\\",\\\"rezultat\\\":110,\\\"intervalReferinta\\\":\\\"70-99\\\"},{\\\"denumireAnaliza\\\":\\\"Cholesterol\\\",\\\"rezultat\\\":180,\\\"intervalReferinta\\\":\\\"125-200\\\"},{\\\"denumireAnaliza\\\":\\\"HDL Cholesterol\\\",\\\"rezultat\\\":35,\\\"intervalReferinta\\\":\\\"40-60\\\"},{\\\"denumireAnaliza\\\":\\\"LDL Cholesterol\\\",\\\"rezultat\\\":140,\\\"intervalReferinta\\\":\\\"0-129\\\"},{\\\"denumireAnaliza\\\":\\\"Triglycerides\\\",\\\"rezultat\\\":175,\\\"intervalReferinta\\\":\\\"0-150\\\"},{\\\"denumireAnaliza\\\":\\\"Creatinine\\\",\\\"rezultat\\\":1,\\\"intervalReferinta\\\":\\\"0.6-1.3\\\"},{\\\"denumireAnaliza\\\":\\\"Urea\\\",\\\"rezultat\\\":50,\\\"intervalReferinta\\\":\\\"17-43\\\"},{\\\"denumireAnaliza\\\":\\\"C-Reactive Protein\\\",\\\"rezultat\\\":0.5,\\\"intervalReferinta\\\":\\\"0.0-3.0\\\"},{\\\"denumireAnaliza\\\":\\\"ALT (SGPT)\\\",\\\"rezultat\\\":60,\\\"intervalReferinta\\\":\\\"7-56\\\"},{\\\"denumireAnaliza\\\":\\\"AST (SGOT)\\\",\\\"rezultat\\\":35,\\\"intervalReferinta\\\":\\\"5-40\\\"},{\\\"denumireAnaliza\\\":\\\"Vitamin D\\\",\\\"rezultat\\\":18,\\\"intervalReferinta\\\":\\\"20-50\\\"},{\\\"denumireAnaliza\\\":\\\"Calcium\\\",\\\"rezultat\\\":9.1,\\\"intervalReferinta\\\":\\\"8.6-10.3\\\"},{\\\"denumireAnaliza\\\":\\\"Iron\\\",\\\"rezultat\\\":55,\\\"intervalReferinta\\\":\\\"60-170\\\"}]}\"\n" +
-                    "    }\n" +
-                    "  ]\n" +
-                    "}\n";
-
-//            String body = """
-//                    {
-//                        "model": "gpt-4o-mini",
-//                        "messages": [
-//                            {
-//                                "role": "user",
-//                                "content": "%s"
-//                            }
-//                        ]
-//                    }""".formatted(message);
+            String body = String.format(
+                    "{\n" +
+                            "  \"model\": \"gpt-4o-mini\",\n" +
+                            "  \"messages\": [\n" +
+                            "    {\n" +
+                            "      \"role\": \"user\",\n" +
+                            "      \"content\": \"%s\"\n" +
+                            "    }\n" +
+                            "  ]\n" +
+                            "}",
+                    escapeJson(message)
+            );
 
 
             HttpRequest request = HttpRequest.newBuilder()
@@ -57,4 +49,13 @@ public class ChatGPTService {
             return null;
         }
     }
+
+    private String escapeJson(String input) {
+        return input
+                .replace("\\", "\\\\")
+                .replace("\"", "\\\"")
+                .replace("\n", "\\n")
+                .replace("\r", "\\r");
+    }
+
 }

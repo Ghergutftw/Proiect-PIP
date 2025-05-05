@@ -9,6 +9,7 @@ import com.itextpdf.text.pdf.parser.PdfTextExtractor;
 
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -38,29 +39,12 @@ public class PdfAnalysis {
 
                 for (Row row : sheet) {
                     if (isFirstRow) {
-                        isFirstRow = false; // Sărim peste header
+                        isFirstRow = false;
                         continue;
                     }
 
-                    JSONObject analiza = new JSONObject();
-                    int cellIndex = 0;
+                    JSONObject analiza = getJsonObject(row);
 
-                    for (Cell cell : row) {
-                        switch (cellIndex) {
-                            case 0 -> analiza.put("denumireAnaliza", cell.getStringCellValue());
-                            case 1 -> analiza.put("intervalReferinta", cell.getStringCellValue());
-                            case 2 -> {
-                                if (cell.getCellType() == CellType.NUMERIC) {
-                                    analiza.put("rezultat", cell.getNumericCellValue());
-                                } else {
-                                    analiza.put("rezultat", cell.getStringCellValue());
-                                }
-                            }
-                        }
-                        cellIndex++;
-                    }
-
-                    // Adaugă doar dacă nu e un rând gol
                     if (!analiza.isEmpty()) {
                         resultsArray.put(analiza);
                     }
@@ -70,5 +54,26 @@ public class PdfAnalysis {
 
         finalResult.put("results", resultsArray);
         return finalResult;
+    }
+
+    private static @NotNull JSONObject getJsonObject(Row row) {
+        JSONObject analiza = new JSONObject();
+        int cellIndex = 0;
+
+        for (Cell cell : row) {
+            switch (cellIndex) {
+                case 0 -> analiza.put("denumireAnaliza", cell.getStringCellValue());
+                case 1 -> analiza.put("intervalReferinta", cell.getStringCellValue());
+                case 2 -> {
+                    if (cell.getCellType() == CellType.NUMERIC) {
+                        analiza.put("rezultat", cell.getNumericCellValue());
+                    } else {
+                        analiza.put("rezultat", cell.getStringCellValue());
+                    }
+                }
+            }
+            cellIndex++;
+        }
+        return analiza;
     }
 }
