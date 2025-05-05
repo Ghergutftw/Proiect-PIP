@@ -113,11 +113,10 @@ public class App extends JFrame {
             JSONObject content = FileAnalysis.pdfReader(selectedFile);
 
             // 2. Prompt to instruct ChatGPT on what to do with the text
-            String prompt = "Extract and analyze any lab test data or medical information from the following text, " +
-                    "and return in JSON forat with objects formatted like this: " +
-                    "(denumireAnaliza, rezultat, intervalReferinta, severityRank). If no analysis found, return an empty array.";
+            listaAnalize = PrepareResponse.processResponse(chatGPTService.getChatGPTResponse("Attach a severity rank " +
+                    "for each analysis that you will find in this text and I want the response to be in a json format" +
+                    ", (the fields that i want will be named exactly denumireAnaliza, rezultat, intervalReferinta, severityRank) " + content));
 
-            listaAnalize = PrepareResponse.processResponse(chatGPTService.getChatGPTResponse(prompt + content));
         }
     }
 
