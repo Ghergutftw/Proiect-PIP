@@ -32,28 +32,6 @@ public class App extends JFrame {
         buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.Y_AXIS));
         JButton uploadButtonExcel = new JButton("Upload Excel");
         JButton uploadButtonPDF = new JButton("Upload PDF");
-        uploadButtonExcel.addActionListener(e -> {
-            try {
-                uploadExcel();
-            } catch (IOException ex) {
-                throw new RuntimeException(ex);
-            }
-        });
-        uploadButtonPDF.addActionListener(e -> {
-            try {
-                uploadExcel();
-            } catch (IOException ex) {
-                throw new RuntimeException(ex);
-            }
-        });
-        JButton uploadExcelButton = new JButton("Upload Excel");
-        uploadExcelButton.addActionListener(e -> {
-            try {
-                uploadExcel();
-            } catch (IOException ex) {
-                throw new RuntimeException(ex);
-            }
-        });
         uploadButtonExcel.setAlignmentX(Component.CENTER_ALIGNMENT); // Centrează butoanele
         uploadButtonPDF.setAlignmentX(Component.CENTER_ALIGNMENT);
         buttonPanel.add(uploadButtonExcel);
@@ -70,7 +48,41 @@ public class App extends JFrame {
         table.setFont(new Font("Arial", Font.PLAIN, 12));
         JScrollPane scrollPane = new JScrollPane(table);
         add(scrollPane, BorderLayout.CENTER);
+        uploadButtonExcel.addActionListener(e -> {
+            try {
+                uploadExcel();
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }finally {
+                refreshTable(tableModel);
+            }
+        });
+        uploadButtonPDF.addActionListener(e -> {
+            try {
+                uploadExcel();
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }finally {
+                refreshTable(tableModel);
+            }
+        });
+        JButton uploadExcelButton = new JButton("Upload Excel");
+        uploadExcelButton.addActionListener(e -> {
+            try {
+                uploadExcel();
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            } finally {
+                refreshTable(tableModel);
+            }
+        });
 
+
+
+    }
+
+    private void refreshTable(DefaultTableModel tableModel)
+    {
         tableModel.setRowCount(0);
 
         for (Analysis analiza : listaAnalize) {
@@ -117,6 +129,5 @@ public class App extends JFrame {
                     "for each analysis I will give you and I want the response to be in a json format" +
                     ", (the fields that i want will be named exactly denumireAnaliza,rezultat,intervalReferinta,severityRank) " + content));
         }
-
     }
 }
