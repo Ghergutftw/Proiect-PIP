@@ -31,7 +31,7 @@ class ExcelAndPDFValidationTest {
         File dataFile = new File("src/test/java/ro/tuiasi/ac/fisiereTest/analize.xlsx");
 
         // Act
-        JSONObject result = PdfAnalysis.excelReader(dataFile);
+        JSONObject result = FileAnalysis.excelReader(dataFile);
 
         // Assert
         assertFalse(result.getJSONArray("results").isEmpty(),
@@ -44,7 +44,7 @@ class ExcelAndPDFValidationTest {
     @Test
     void testExcelReaderWithMissingColumns() {
         File missingColFile = new File("src/test/java/ro/tuiasi/ac/fisiereTest/analize_faracol.xlsx");
-        assertThrows(IllegalStateException.class, () -> PdfAnalysis.excelReader(missingColFile));
+        assertThrows(IllegalStateException.class, () -> FileAnalysis.excelReader(missingColFile));
     }
 
     /**
@@ -54,7 +54,7 @@ class ExcelAndPDFValidationTest {
     @Test
     void testExcelReaderWithNullValues() throws IOException {
         File nullValuesFile = new File("src/test/java/ro/tuiasi/ac/fisiereTest/analize.xlsx");
-        JSONObject result = PdfAnalysis.excelReader(nullValuesFile);
+        JSONObject result = FileAnalysis.excelReader(nullValuesFile);
         assertEquals(3, result.getJSONArray("results").length());
     }
 
@@ -64,7 +64,7 @@ class ExcelAndPDFValidationTest {
     @Test
     void testExcelReaderWithWrongDataTypes() {
         File wrongTypesFile = new File("src/test/java/ro/tuiasi/ac/fisiereTest/analize.xlsx");
-        assertThrows(NumberFormatException.class, () -> PdfAnalysis.excelReader(wrongTypesFile));
+        assertThrows(NumberFormatException.class, () -> FileAnalysis.excelReader(wrongTypesFile));
     }
 
     /**
@@ -73,7 +73,7 @@ class ExcelAndPDFValidationTest {
     @Test
     void testPdfReaderWithEmptyFile() {
         File emptyPdf = new File("src/test/java/ro/tuiasi/ac/fisiereTest/analize.pdf");
-        assertDoesNotThrow(() -> PdfAnalysis.pdfReader(emptyPdf));
+        assertDoesNotThrow(() -> FileAnalysis.pdfReader(emptyPdf));
     }
 
     /**
@@ -83,7 +83,7 @@ class ExcelAndPDFValidationTest {
     @Test
     void testPdfReaderWithoutTable() throws IOException {
         File noTablePdf = new File("src/test/java/ro/tuiasi/ac/fisiereTest/analize.pdf");
-        PdfAnalysis.pdfReader(noTablePdf);
+        FileAnalysis.pdfReader(noTablePdf);
         // Should not throw exceptions for non-table PDFs
     }
 }

@@ -61,14 +61,21 @@ public class PrepareResponse {
         }
 
         // Parsează JSON-ul extras
+        System.out.println("Extracted JSON:\n" + extractedJson);
         JsonNode extractedJsonNode = mapper.readTree(extractedJson);
+
+        // Verifica daca results este null
+        JsonNode resultsNode = extractedJsonNode.get("results");
+        if (resultsNode == null || !resultsNode.isArray()) {
+            throw new IllegalStateException("'results' field missing or is not an array in the JSON content.");
+        }
 
         // Parcurge fiecare analiză și creează obiecte Analysis
         for (JsonNode result : extractedJsonNode.get("results")) {
-            String denumire = result.get("denumireAnaliza").asText();
-            double rezultat = result.get("rezultat").asDouble();
-            String intervalReferinta = result.get("intervalReferinta").asText();
-            String severityRank = result.get("severityRank").asText();
+            String denumire = result.path("denumireAnaliza").asText();
+            double rezultat = result.path("rezultat").asDouble();
+            String intervalReferinta = result.path("intervalReferinta").asText();
+            String severityRank = result.path("severityRank").asText();
 
             Analysis analysis = new Analysis(denumire, rezultat, intervalReferinta, severityRank);
             allAnalyses.add(analysis);

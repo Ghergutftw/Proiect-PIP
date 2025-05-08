@@ -112,7 +112,7 @@ public class App extends JFrame {
         });
     }
 
-    private void uploadPDF() throws IOException {
+    void uploadPDF() throws IOException {
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setDialogTitle("Select a PDF File");
         fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("PDF Documents", "pdf"));
@@ -127,13 +127,14 @@ public class App extends JFrame {
 
             // 2. Prompt to instruct ChatGPT on what to do with the text
             listaAnalize = PrepareResponse.processResponse(chatGPTService.getChatGPTResponse("Attach a severity rank " +
-                    "for each analysis that you will find in this text and I want the response to be in a json format" +
+                    "for each analysis that you will find in this text and I want the response to be directly in " +
+                    "json format starting with ```json" +
                     ", (the fields that i want will be named exactly denumireAnaliza, rezultat, intervalReferinta, severityRank) " + content));
 
         }
     }
 
-    private void uploadExcel() throws IOException {
+    void uploadExcel() throws IOException {
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setDialogTitle("Select an Excel File");
         fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("Excel Files", "xlsx", "xls"));
