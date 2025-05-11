@@ -15,20 +15,21 @@ import org.json.JSONObject;
 
 public class FileAnalysis {
 
-    public static JSONObject pdfReader(File file) throws IOException {
+    public static String pdfReader(File file) throws IOException {
         PdfReader reader = new PdfReader(file.getAbsolutePath());
-        JSONObject result = new JSONObject();
+        StringBuilder result = new StringBuilder();
         int pages = reader.getNumberOfPages();
 
         for (int i = 1; i <= pages; i++) {
             LocationTextExtractionStrategy strategy = new LocationTextExtractionStrategy();
             String pageText = PdfTextExtractor.getTextFromPage(reader, i, strategy);
-            result.put("page_" + i, pageText);
+            result.append(pageText).append("\n"); // Add newline between pages
         }
 
         reader.close();
-        return result;
+        return result.toString();
     }
+
 
 
     public static JSONObject excelReader(File file) throws IOException {

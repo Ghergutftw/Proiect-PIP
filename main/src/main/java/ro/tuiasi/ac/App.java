@@ -17,7 +17,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static ro.tuiasi.ac.FileAnalysis.excelReader;
-import static ro.tuiasi.ac.FileAnalysis.pdfReader;
 
 public class App extends JFrame {
 
@@ -123,12 +122,18 @@ public class App extends JFrame {
             System.out.println("PDF Uploaded: " + selectedFile.getAbsolutePath());
 
             // 1. Extract text from the PDF
-            JSONObject content = FileAnalysis.pdfReader(selectedFile);
+            String content = FileAnalysis.pdfReader(selectedFile);
 
             // 2. Prompt to instruct ChatGPT on what to do with the text
             listaAnalize = PrepareResponse.processResponse(chatGPTService.getChatGPTResponse("Attach a severity rank " +
-                    "for each analysis that you will find in this text and I want the response to be directly in " +
-                    "json format starting with ```json" +
+                    "for EACH analysis that you will find in this text following this pattern: analize, rezultate, um, interval" +
+                    "biologic de referinta( basically look more after the combination: number   unit measure  interval " +
+                    " and I want the response to be directly in " +
+                    "json format starting with: Here's the JSON formatted response with severity ranks based on the provided analyses:\n" +
+                    "\n" +
+                    "```json\n" +
+                    "{\n" +
+                    "  \"results\": [" +
                     ", (the fields that i want will be named exactly denumireAnaliza, rezultat, intervalReferinta, severityRank) " + content));
 
         }
