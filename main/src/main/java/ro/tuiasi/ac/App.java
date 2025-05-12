@@ -165,7 +165,7 @@ public class App extends JFrame {
         });
     }
 
-    void uploadPDF() throws IOException {
+    public void uploadPDF() throws IOException {
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setDialogTitle("Select a PDF File");
         fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("PDF Documents", "pdf"));
@@ -202,7 +202,7 @@ public class App extends JFrame {
         }
     }
 
-    void uploadExcel() throws IOException {
+    public void uploadExcel() throws IOException {
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setDialogTitle("Select an Excel File");
         fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("Excel Files", "xlsx", "xls"));
