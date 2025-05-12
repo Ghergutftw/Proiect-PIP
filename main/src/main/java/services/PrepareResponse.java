@@ -83,6 +83,43 @@ public class PrepareResponse {
 
         return allAnalyses;
     }
+    public static String processObservation(String chatGPTResponse) throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode rootNode = mapper.readTree(chatGPTResponse);
+
+        // Get the content text from the first choice
+        JsonNode contentNode = rootNode
+                .path("choices")
+                .get(0)
+                .path("message")
+                .path("content");
+
+        if (contentNode.isMissingNode() || contentNode.isNull()) {
+            throw new IllegalStateException("Missing 'content' in ChatGPT response.");
+        }
+
+        String contentString = contentNode.asText().trim();
+
+        // Try to extract an `observation` from a JSON block if it exists
+        Pattern pattern = Pattern.compile("```json\\s*(\\{.*?\\})\\s*```", Pattern.DOTALL);
+        Matcher matcher = pattern.matcher(contentString);
+
+        if (matcher.find()) {
+            String extractedJson = matcher.group(1);
+            JsonNode extractedJsonNode = mapper.readTree(extractedJson);
+            JsonNode observationNode = extractedJsonNode.get("observation");
+
+            if (observationNode != null && !observationNode.isNull()) {
+                return observationNode.asText().trim();
+            } else {
+                throw new IllegalStateException("'observation' field missing in the JSON content.");
+            }
+        }
+
+        // If no JSON block, return the plain content as observation
+        return contentString;
+    }
+
 }
 
 

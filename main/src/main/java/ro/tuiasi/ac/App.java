@@ -1,5 +1,6 @@
 package ro.tuiasi.ac;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.JSONObject;
 import services.Analysis;
 import services.ChatGPTService;
@@ -10,7 +11,6 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import java.awt.*;
 import java.io.File;
-import javax.swing.BorderFactory;
 import javax.swing.JScrollPane;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -21,6 +21,7 @@ import static ro.tuiasi.ac.FileAnalysis.excelReader;
 public class App extends JFrame {
 
     private static List<Analysis> listaAnalize = new ArrayList<>();
+    private static String observatieGPT;
     ChatGPTService chatGPTService = new ChatGPTService();
 
     public App() {
@@ -135,7 +136,17 @@ public class App extends JFrame {
                     "{\n" +
                     "  \"results\": [" +
                     ", (the fields that i want will be named exactly denumireAnaliza, rezultat, intervalReferinta, severityRank) " + content));
+            ObjectMapper mapper = new ObjectMapper();
+            String listaAnalizeJson = mapper.writeValueAsString(listaAnalize);
+            observatieGPT = PrepareResponse.processObservation(chatGPTService.getChatGPTResponse("Analizează următorul JSON care conține rezultatele unor analize medicale. Îți cer să îmi oferi o observație generală de maximum 100 de cuvinte, într-un limbaj clar și util pentru pacient (nu medical avansat). Vreau să îmi spui:\n" +
+                    "\n" +
+                    "Unde sunt cele mai îngrijorătoare rezultate (care ies cel mai mult din intervalul de referință),\n" +
+                    "\n" +
+                    "Ce riscuri pot fi asociate acestor valori (dacă se poate),\n" +
+                    "\n" +
+                    "Și ce recomandări generale ar putea urma pacientul pentru a-și îmbunătăți starea de sănătate.:" + listaAnalize));
 
+            System.out.println(observatieGPT);
         }
     }
 
