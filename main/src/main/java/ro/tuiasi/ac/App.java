@@ -135,17 +135,18 @@ public class App extends JFrame {
                     "```json\n" +
                     "{\n" +
                     "  \"results\": [" +
-                    ", (the fields that i want will be named exactly denumireAnaliza, rezultat, intervalReferinta, severityRank) " + content));
+                    ", (the fields that i want will be named exactly denumireAnaliza, rezultat, intervalReferinta, severityRank(I want this to be a word, not a number)) " + content));
             ObjectMapper mapper = new ObjectMapper();
             String listaAnalizeJson = mapper.writeValueAsString(listaAnalize);
-            observatieGPT = PrepareResponse.processObservation(chatGPTService.getChatGPTResponse("Analizează următorul JSON care conține rezultatele unor analize medicale. Îți cer să îmi oferi o observație generală de maximum 100 de cuvinte, într-un limbaj clar și util pentru pacient (nu medical avansat). Vreau să îmi spui:\n" +
+            String promptGPT = "Analizează următorul JSON care conține rezultatele unor analize medicale. Îți cer să îmi oferi o observație generală de maximum 100 de cuvinte, într-un limbaj clar și util pentru pacient (nu medical avansat). Vreau să îmi spui:\n" +
                     "\n" +
-                    "Unde sunt cele mai îngrijorătoare rezultate (care ies cel mai mult din intervalul de referință),\n" +
+                    "Unde sunt cele mai îngrijorătoare rezultate (care ies cel mai mult din intervalul de referință, dar sa-mi spui fara sa mentionezi intervalul de referinta),\n" +
                     "\n" +
                     "Ce riscuri pot fi asociate acestor valori (dacă se poate),\n" +
                     "\n" +
-                    "Și ce recomandări generale ar putea urma pacientul pentru a-și îmbunătăți starea de sănătate.:" + listaAnalize));
-
+                    "Și ce recomandări generale ar putea urma pacientul pentru a-și îmbunătăți starea de sănătate.:" + listaAnalizeJson;
+            observatieGPT = PrepareResponse.processObservation(chatGPTService.getChatGPTResponse(promptGPT));
+            System.out.println(promptGPT);
             System.out.println(observatieGPT);
         }
     }
