@@ -20,9 +20,11 @@ import static ro.tuiasi.ac.FileAnalysis.excelReader;
 
 public class App extends JFrame {
 
+    private JTextArea observatieTextArea;
     private static List<Analysis> listaAnalize = new ArrayList<>();
     private static String observatieGPT;
     ChatGPTService chatGPTService = new ChatGPTService();
+    ObjectMapper mapper = new ObjectMapper();
 
     public App() {
         setTitle("Excel and PDF Uploader");
@@ -59,8 +61,19 @@ public class App extends JFrame {
         th.setFont(new Font("Arial", Font.BOLD, 14));
         table.setRowHeight(30);
 
+        // Observation Text Area
+        observatieTextArea = new JTextArea(4, 60);
+        observatieTextArea.setLineWrap(true);
+        observatieTextArea.setWrapStyleWord(true);
+        observatieTextArea.setEditable(false);
+        observatieTextArea.setFont(new Font("Arial", Font.ITALIC, 14));
+        observatieTextArea.setBorder(BorderFactory.createTitledBorder("Observație generală"));
+
+        JScrollPane observatieScroll = new JScrollPane(observatieTextArea);
+        add(observatieScroll, BorderLayout.SOUTH);
         JScrollPane scrollPane = new JScrollPane(table);
         add(scrollPane, BorderLayout.CENTER);
+
         uploadButtonExcel.addActionListener(e -> {
             try {
                 uploadExcel();
@@ -103,6 +116,14 @@ public class App extends JFrame {
             tableModel.addRow(rowData);
         }
     }
+    private void refreshObservatie() {
+        if (observatieGPT != null && !observatieGPT.isEmpty()) {
+            observatieTextArea.setText(observatieGPT);
+        } else {
+            observatieTextArea.setText("Nicio observație generată încă.");
+        }
+    }
+
 
     public static void main(String[] args) {
 
@@ -136,7 +157,6 @@ public class App extends JFrame {
                     "{\n" +
                     "  \"results\": [" +
                     ", (the fields that i want will be named exactly denumireAnaliza, rezultat, intervalReferinta, severityRank(I want this to be a word, not a number)) " + content));
-            ObjectMapper mapper = new ObjectMapper();
             String listaAnalizeJson = mapper.writeValueAsString(listaAnalize);
             String promptGPT = "Analizează următorul JSON care conține rezultatele unor analize medicale. Îți cer să îmi oferi o observație generală de maximum 100 de cuvinte, într-un limbaj clar și util pentru pacient (nu medical avansat). Vreau să îmi spui:\n" +
                     "\n" +
@@ -146,8 +166,7 @@ public class App extends JFrame {
                     "\n" +
                     "Și ce recomandări generale ar putea urma pacientul pentru a-și îmbunătăți starea de sănătate.:" + listaAnalizeJson;
             observatieGPT = PrepareResponse.processObservation(chatGPTService.getChatGPTResponse(promptGPT));
-            System.out.println(promptGPT);
-            System.out.println(observatieGPT);
+            refreshObservatie();
         }
     }
 
@@ -166,6 +185,16 @@ public class App extends JFrame {
             listaAnalize = PrepareResponse.processResponse(chatGPTService.getChatGPTResponse("Attach a severity rank " +
                     "for each analysis I will give you and I want the response to be in a json format" +
                     ", (the fields that i want will be named exactly denumireAnaliza, rezultat, intervalReferinta, severityRank) " + content));
+            String listaAnalizeJson = mapper.writeValueAsString(listaAnalize);
+            String promptGPT = "Analizează următorul JSON care conține rezultatele unor analize medicale. Îți cer să îmi oferi o observație generală de maximum 100 de cuvinte, într-un limbaj clar și util pentru pacient (nu medical avansat). Vreau să îmi spui:\n" +
+                    "\n" +
+                    "Unde sunt cele mai îngrijorătoare rezultate (care ies cel mai mult din intervalul de referință, dar sa-mi spui fara sa mentionezi intervalul de referinta),\n" +
+                    "\n" +
+                    "Ce riscuri pot fi asociate acestor valori (dacă se poate),\n" +
+                    "\n" +
+                    "Și ce recomandări generale ar putea urma pacientul pentru a-și îmbunătăți starea de sănătate.:" + listaAnalizeJson;
+            observatieGPT = PrepareResponse.processObservation(chatGPTService.getChatGPTResponse(promptGPT));
+            refreshObservatie();
         }
     }
 }
