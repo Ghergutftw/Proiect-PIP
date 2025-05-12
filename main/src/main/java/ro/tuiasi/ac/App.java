@@ -5,6 +5,8 @@ import org.json.JSONObject;
 import services.Analysis;
 import services.ChatGPTService;
 import services.PrepareResponse;
+
+import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -20,102 +22,132 @@ import static ro.tuiasi.ac.FileAnalysis.excelReader;
 
 public class App extends JFrame {
 
-    private JTextArea observatieTextArea;
+    private JLabel statusLabel;
+    private JLabel loadingLabel;
+    private final JTextArea observatieTextArea;
     private static List<Analysis> listaAnalize = new ArrayList<>();
     private static String observatieGPT;
     ChatGPTService chatGPTService = new ChatGPTService();
     ObjectMapper mapper = new ObjectMapper();
 
     public App() {
-        setTitle("Excel and PDF Uploader");
-        setSize(800, 400);
+        setTitle("Analiză Medicală - Uploader");
+        setSize(1000, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
-        setLayout(new BorderLayout());
+        setLayout(new BorderLayout(10, 10));
+        getContentPane().setBackground(new Color(245, 245, 245));
 
+        // Styling panel for upload buttons
         JPanel buttonPanel = new JPanel();
+        buttonPanel.setBackground(new Color(240, 240, 240));
         buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.Y_AXIS));
-        JButton uploadButtonExcel = new JButton("Upload Excel");
-        JButton uploadButtonPDF = new JButton("Upload PDF");
-        uploadButtonExcel.setAlignmentX(Component.CENTER_ALIGNMENT); // Centrează butoanele
-        uploadButtonPDF.setAlignmentX(Component.CENTER_ALIGNMENT);
+        buttonPanel.setBorder(new EmptyBorder(20, 20, 20, 20));
+
+        JButton uploadButtonExcel = createStyledButton(" Upload Excel");
+        JButton uploadButtonPDF = createStyledButton(" Upload PDF");
+
         buttonPanel.add(uploadButtonExcel);
-        buttonPanel.add(Box.createVerticalStrut(10));
+        buttonPanel.add(Box.createVerticalStrut(20));
         buttonPanel.add(uploadButtonPDF);
+
         add(buttonPanel, BorderLayout.WEST);
 
-        String[] columns = {"Analiza", "Rezultat", "Interval de referinta", "Severitate"};
-
+        String[] columns = {"Analiza", "Rezultat", "Interval de referință", "Severitate"};
         DefaultTableModel tableModel = new DefaultTableModel(columns, 0);
-        JTable table = new JTable(tableModel);
+        JTable table = new JTable(tableModel) {
+            public Component prepareRenderer(javax.swing.table.TableCellRenderer renderer, int row, int col) {
+                Component c = super.prepareRenderer(renderer, row, col);
+                if (!isRowSelected(row)) {
+                    c.setBackground(row % 2 == 0 ? Color.WHITE : new Color(235, 245, 255));
+                } else {
+                    c.setBackground(new Color(180, 220, 240));
+                }
+                return c;
+            }
+        };
+
+        // Table Styling
+        table.setRowHeight(28);
+        table.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        table.setGridColor(Color.LIGHT_GRAY);
+        table.setShowHorizontalLines(true);
 
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
         centerRenderer.setHorizontalAlignment(JLabel.CENTER);
-
         for (int i = 0; i < table.getColumnCount(); i++) {
             table.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
         }
-        table.setRowHeight(25);
-        table.setFont(new Font("Arial", Font.BOLD, 14));
+
         JTableHeader th = table.getTableHeader();
-        th.setFont(new Font("Arial", Font.BOLD, 14));
-        table.setRowHeight(30);
+        th.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        th.setBackground(new Color(210, 230, 250));
+        th.setForeground(Color.DARK_GRAY);
+
+        JScrollPane scrollPane = new JScrollPane(table);
+        add(scrollPane, BorderLayout.CENTER);
 
         // Observation Text Area
         observatieTextArea = new JTextArea(4, 60);
         observatieTextArea.setLineWrap(true);
         observatieTextArea.setWrapStyleWord(true);
         observatieTextArea.setEditable(false);
-        observatieTextArea.setFont(new Font("Arial", Font.ITALIC, 14));
+        observatieTextArea.setFont(new Font("Segoe UI", Font.ITALIC, 14));
         observatieTextArea.setBorder(BorderFactory.createTitledBorder("Observație generală"));
 
         JScrollPane observatieScroll = new JScrollPane(observatieTextArea);
+        observatieScroll.setBorder(new EmptyBorder(10, 10, 10, 10));
         add(observatieScroll, BorderLayout.SOUTH);
-        JScrollPane scrollPane = new JScrollPane(table);
-        add(scrollPane, BorderLayout.CENTER);
 
+
+
+        // Action Listeners
         uploadButtonExcel.addActionListener(e -> {
             try {
                 uploadExcel();
             } catch (IOException ex) {
-                throw new RuntimeException(ex);
-            }finally {
-                refreshTable(tableModel);
-            }
-        });
-        uploadButtonPDF.addActionListener(e -> {
-            try {
-                uploadPDF();
-            } catch (IOException ex) {
-                throw new RuntimeException(ex);
-            }finally {
-                refreshTable(tableModel);
-            }
-        });
-        JButton uploadExcelButton = new JButton("Upload Excel");
-        uploadExcelButton.addActionListener(e -> {
-            try {
-                uploadExcel();
-            } catch (IOException ex) {
-                throw new RuntimeException(ex);
+                ex.printStackTrace();
             } finally {
                 refreshTable(tableModel);
             }
         });
 
-
-
+        uploadButtonPDF.addActionListener(e -> {
+            try {
+                uploadPDF();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            } finally {
+                refreshTable(tableModel);
+            }
+        });
     }
 
-    private void refreshTable(DefaultTableModel tableModel)
-    {
-        tableModel.setRowCount(0);
+    private JButton createStyledButton(String text) {
+        JButton button = new JButton(text);
+        button.setFocusPainted(false);
+        button.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        button.setBackground(new Color(66, 133, 244));
+        button.setForeground(Color.WHITE);
+        button.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
+        button.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        button.setAlignmentX(Component.CENTER_ALIGNMENT);
+        return button;
+    }
 
+    private void refreshTable(DefaultTableModel tableModel) {
+        tableModel.setRowCount(0);
         for (Analysis analiza : listaAnalize) {
-            Object[] rowData = {analiza.getDenumireAnaliza(), analiza.getRezultat(), analiza.getIntervalReferinta(), analiza.getSeveritate()};
+            Object[] rowData = {
+                    analiza.getDenumireAnaliza(),
+                    analiza.getRezultat(),
+                    analiza.getIntervalReferinta(),
+                    analiza.getSeveritate()
+            };
             tableModel.addRow(rowData);
         }
     }
+
     private void refreshObservatie() {
         if (observatieGPT != null && !observatieGPT.isEmpty()) {
             observatieTextArea.setText(observatieGPT);
