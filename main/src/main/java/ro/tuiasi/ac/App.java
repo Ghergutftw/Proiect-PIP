@@ -20,7 +20,7 @@ import static ro.tuiasi.ac.FileAnalysis.excelReader;
 
 public class App extends JFrame {
 
-    private JTextArea observatieTextArea;
+    private final JTextArea observatieTextArea;
     private static List<Analysis> listaAnalize = new ArrayList<>();
     private static String observatieGPT;
     ChatGPTService chatGPTService = new ChatGPTService();
@@ -28,7 +28,7 @@ public class App extends JFrame {
 
     public App() {
         setTitle("Excel and PDF Uploader");
-        setSize(800, 400);
+        setSize(800, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
@@ -37,7 +37,7 @@ public class App extends JFrame {
         buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.Y_AXIS));
         JButton uploadButtonExcel = new JButton("Upload Excel");
         JButton uploadButtonPDF = new JButton("Upload PDF");
-        uploadButtonExcel.setAlignmentX(Component.CENTER_ALIGNMENT); // Centrează butoanele
+        uploadButtonExcel.setAlignmentX(Component.CENTER_ALIGNMENT);
         uploadButtonPDF.setAlignmentX(Component.CENTER_ALIGNMENT);
         buttonPanel.add(uploadButtonExcel);
         buttonPanel.add(Box.createVerticalStrut(10));
@@ -62,7 +62,7 @@ public class App extends JFrame {
         table.setRowHeight(30);
 
         // Observation Text Area
-        observatieTextArea = new JTextArea(4, 60);
+        observatieTextArea = new JTextArea(9, 60);
         observatieTextArea.setLineWrap(true);
         observatieTextArea.setWrapStyleWord(true);
         observatieTextArea.setEditable(false);
@@ -151,7 +151,7 @@ public class App extends JFrame {
                     "for EACH analysis that you will find in this text following this pattern: analize, rezultate, um, interval" +
                     "biologic de referinta( basically look more after the combination: number   unit measure  interval " +
                     " and I want the response to be directly in " +
-                    "json format starting with: Here's the JSON formatted response with severity ranks based on the provided analyses:\n" +
+                    "json format starting with: Here's the JSON formatted response with severity ranks based on the provided analyses(('Low','Medium','High')):\n" +
                     "\n" +
                     "```json\n" +
                     "{\n" +
@@ -184,7 +184,7 @@ public class App extends JFrame {
 
             listaAnalize = PrepareResponse.processResponse(chatGPTService.getChatGPTResponse("Attach a severity rank " +
                     "for each analysis I will give you and I want the response to be in a json format" +
-                    ", (the fields that i want will be named exactly denumireAnaliza, rezultat, intervalReferinta, severityRank) " + content));
+                    ", (the fields that i want will be named exactly denumireAnaliza, rezultat, intervalReferinta, severityRank(('Low','Medium','High')) " + content));
             String listaAnalizeJson = mapper.writeValueAsString(listaAnalize);
             String promptGPT = "Analizează următorul JSON care conține rezultatele unor analize medicale. Îți cer să îmi oferi o observație generală de maximum 100 de cuvinte, într-un limbaj clar și util pentru pacient (nu medical avansat). Vreau să îmi spui:\n" +
                     "\n" +
