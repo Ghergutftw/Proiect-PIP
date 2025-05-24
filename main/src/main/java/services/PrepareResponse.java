@@ -6,7 +6,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -35,12 +34,9 @@ public class PrepareResponse {
      * @throws IllegalStateException Dacă blocul JSON nu este găsit în răspunsul text.
      */
     public static List<Analysis> processResponse(String chatGPTResponse) throws JsonProcessingException {
-        List<Analysis> allAnalyses = new ArrayList<>();
-
         ObjectMapper mapper = new ObjectMapper();
         JsonNode rootNode = mapper.readTree(chatGPTResponse);
 
-        // Navighează prin JSON pentru a obține conținutul text al răspunsului
         JsonNode contentNode = rootNode
                 .path("choices")
                 .get(0)
@@ -48,34 +44,33 @@ public class PrepareResponse {
                 .path("content");
 
         String contentString = contentNode.asText();
-
-        // Extrage blocul JSON dintre delimitatorii ```json ... ```
         Pattern pattern = Pattern.compile("```json\\s*(\\{.*?\\})\\s*```", Pattern.DOTALL);
         Matcher matcher = pattern.matcher(contentString);
 
-        String extractedJson;
-        if (matcher.find()) {
-            extractedJson = matcher.group(1);
-        } else {
+        if (!matcher.find()) {
             throw new IllegalStateException("JSON block not found in the content!");
         }
 
-        // Parsează JSON-ul extras
-        System.out.println("Extracted JSON:\n" + extractedJson);
+        String extractedJson = matcher.group(1);
         JsonNode extractedJsonNode = mapper.readTree(extractedJson);
 
-        // Verifica daca results este null
         JsonNode resultsNode = extractedJsonNode.get("results");
         if (resultsNode == null || !resultsNode.isArray()) {
             throw new IllegalStateException("'results' field missing or is not an array in the JSON content.");
         }
 
-        // Parcurge fiecare analiză și creează obiecte Analysis
-        for (JsonNode result : extractedJsonNode.get("results")) {
-            String denumire = result.path("denumireAnaliza").asText();
-            double rezultat = result.path("rezultat").asDouble();
-            String intervalReferinta = result.path("intervalReferinta").asText();
-            String severityRank = result.path("severityRank").asText();
+        List<Analysis> allAnalyses = new ArrayList<>();
+        for (JsonNode result : resultsNode) {
+            // Validate all required fields exist
+            if (!result.has("denumireAnaliza") || !result.has("rezultat") ||
+                    !result.has("intervalReferinta") || !result.has("severityRank")) {
+                throw new IllegalStateException("Missing required field in analysis result");
+            }
+
+            String denumire = result.get("denumireAnaliza").asText();
+            double rezultat = result.get("rezultat").asDouble();
+            String intervalReferinta = result.get("intervalReferinta").asText();
+            String severityRank = result.get("severityRank").asText();
 
             Analysis analysis = new Analysis(denumire, rezultat, intervalReferinta, severityRank);
             allAnalyses.add(analysis);
@@ -83,11 +78,11 @@ public class PrepareResponse {
 
         return allAnalyses;
     }
+
     public static String processObservation(String chatGPTResponse) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         JsonNode rootNode = mapper.readTree(chatGPTResponse);
 
-        // Get the content text from the first choice
         JsonNode contentNode = rootNode
                 .path("choices")
                 .get(0)
@@ -100,7 +95,6 @@ public class PrepareResponse {
 
         String contentString = contentNode.asText().trim();
 
-        // Try to extract an `observation` from a JSON block if it exists
         Pattern pattern = Pattern.compile("```json\\s*(\\{.*?\\})\\s*```", Pattern.DOTALL);
         Matcher matcher = pattern.matcher(contentString);
 
@@ -116,10 +110,11 @@ public class PrepareResponse {
             }
         }
 
-        // If no JSON block, return the plain content as observation
         return contentString;
     }
 
 }
+
+
 
 

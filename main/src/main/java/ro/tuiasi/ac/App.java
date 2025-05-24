@@ -5,14 +5,18 @@ import org.json.JSONObject;
 import services.Analysis;
 import services.ChatGPTService;
 import services.PrepareResponse;
+
 import javax.swing.*;
-import javax.swing.table.*;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
+import javax.swing.table.TableRowSorter;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
-import java.util.Comparator;
 
 import static ro.tuiasi.ac.FileAnalysis.excelReader;
 
@@ -259,5 +263,9 @@ public class App extends JFrame {
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> new App().setVisible(true));
+    }
+
+    public Collection<Analysis> getListaAnalize() {
+        return listaAnalize;
     }
 }
